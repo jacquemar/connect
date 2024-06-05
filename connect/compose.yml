@@ -1,0 +1,23 @@
+version: "3"
+services:
+  client:
+    image: connect-front:v4
+    command: sh -c "npm run dev"
+    working_dir: /app
+    ports: 
+      - 4173:4173
+    networks:
+      - px-app
+  server:
+    image: connect-back:v5
+    command: sh -c "node index"
+    working_dir: /app
+    ports: 
+     - 3000:3000
+    networks:
+      - px-app
+networks:
+  px-app:
+    driver: bridge
+
+
