@@ -1,4 +1,5 @@
 import profileImage from "../assets/placeholder.png";
+import API_URL from "../config";
 import bannerImage from "../assets/bg-connect.jpg"
 import facebook from "../assets/icons/facebook-icon.svg";
 import instagram from "../assets/icons/Instagram-icon.svg";
@@ -25,7 +26,7 @@ function Profile() {
 
   useEffect(() => {
     // Utilisez une requête HTTP GET pour récupérer les informations de l'utilisateur
-    axios.get(`http://138.68.126.6/api/users/${userId}`)
+    axios.get(`${API_URL}/api/users/${userId}`)
       .then(response => {
         setUserData(response.data);
         console.log(userData)

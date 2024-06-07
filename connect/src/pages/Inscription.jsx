@@ -1,6 +1,6 @@
 import logoColor from "../assets/icons/COLOR-LOGO-CONNECT.svg";
 import { useNavigate } from "react-router-dom";
-
+import API_URL from "../config"; 
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
@@ -31,7 +31,7 @@ const Inscription = () => {
         // setLoading(true);
 
         try {
-            const response = await axios.post("http://138.68.126.6/create-user", {
+            const response = await axios.post(`${API_URL}/create-user`, {
               userName: userName,
               email: email,
               password: password,

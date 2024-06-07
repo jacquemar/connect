@@ -1,4 +1,5 @@
 import bg from "../assets/bg-connect.jpg";
+import API_URL from "../config"; 
 import { useMediaQuery } from 'react-responsive';
 import placeholder from "../assets/placeholder.png";
 import { useState, useEffect } from "react";
@@ -77,7 +78,7 @@ useEffect(() => {
 		}
   
 		const userId = decodedToken.userId;
-		axios.get(`http://138.68.126.6/api/users/${userId}`)
+		axios.get(`${API_URL}/api/users/${userId}`)
 		.then((response) => {
 			setUserData(response.data);
 			console.log(userData);
@@ -105,7 +106,7 @@ const handleBanniereUpload = async (event) => {
     formData.append('file', file);
 
     try {
-        const response = await axios.post('http://138.68.126.6/upload/banniere', formData);
+        const response = await axios.post(`${API_URL}/upload/banniere`, formData);
         const url = response.data.url;
         setBanniereURL(url); // Mettre à jour l'URL de la bannière dans le state
     } catch (error) {
@@ -120,7 +121,7 @@ const handlePhotoProfilUpload = async (event) => {
     formData.append('file', file);
 
     try {
-        const response = await axios.post('http://138.68.126.6/upload/photoProfil', formData);
+        const response = await axios.post(`${API_URL}/upload/photoProfil`, formData);
         const url = response.data.url;
         setPhotoProfilURL(url); // Mettre à jour l'URL de la photo de profil dans le state
     } catch (error) {
@@ -254,7 +255,7 @@ const handlePhoneNumberChange = (event) => {
 			const token = localStorage.getItem('token');
 			const userId = jwtDecode(token).userId;
 			// Envoi des données du formulaire au serveur
-			const response = await axios.put(`http://138.68.126.6/edit/profil/${userId}`, {
+			const response = await axios.put(`${API_URL}/edit/profil/${userId}`, {
 				photoProfilURL,
 				banniereURL,
 				nomComplet,

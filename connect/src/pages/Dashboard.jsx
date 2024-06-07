@@ -1,4 +1,5 @@
 import logoColor from "../assets/icons/COLOR-LOGO-CONNECT.svg";
+import API_URL from "../config"; 
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -27,7 +28,7 @@ const Dashboard = () => {
   
       // Récupérez les informations utilisateur sans vérifier l'expiration du token
       const userId = jwtDecode(token).userId; 
-      axios.get(`http://138.68.126.6/api/users/${userId}`)
+      axios.get(`${API_URL}/api/users/${userId}`)
         .then((response) => {
           setUserData(response.data);
         })
