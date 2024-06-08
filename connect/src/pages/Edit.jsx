@@ -57,7 +57,7 @@ const navigate = useNavigate();
 const logoutUser = () => {
     localStorage.removeItem('token');
     setTimeout(() => {
-      navigate("/login"); // Naviguer vers la page d'historique
+      navigate("/login");
     }, 1000);
     toast.error("Votre session a expiré. Veuillez vous reconnecter.");
   };
@@ -73,7 +73,7 @@ useEffect(() => {
 		const decodedToken = jwtDecode(token);
 		if (decodedToken.exp * 1000 < Date.now()) {
 			setTimeout(() => {
-				navigate("/dashboard"); // Redirection vers la page de tableau de bord
+				navigate("/dashboard");
 			}, 1000);
 		}
   
@@ -81,7 +81,6 @@ useEffect(() => {
 		axios.get(`${API_URL}/api/users/${userId}`)
 		.then((response) => {
 			setUserData(response.data);
-			console.log(userData);
 		})
 		.catch(error => {
 			logoutUser();
@@ -91,7 +90,7 @@ useEffect(() => {
 	} catch (error) {
 		console.error('Erreur lors du décodage du token:', error);
 		setTimeout(() => {
-			navigate("/login"); // Redirection vers la page de tableau de bord
+			navigate("/login");
 		}, 1000);
 	}
 	};
@@ -99,7 +98,7 @@ useEffect(() => {
 	getUserData();
   }, []);
   
-// Gestionnaire d'événement pour la bannière
+
 const handleBanniereUpload = async (event) => {
     const file = event.target.files[0];
     const formData = new FormData();

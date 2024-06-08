@@ -15,7 +15,7 @@ const Login = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  console.log(API_URL)
+
   const handleLogin = async (e) => {
     e.preventDefault(); // Empêche le formulaire de se soumettre normalement
   

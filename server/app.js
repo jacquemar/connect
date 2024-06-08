@@ -157,6 +157,53 @@ app.get('/api/user', async (req, res) => {
     res.status(500).json({ error: "Une erreur s'est produite lors de la récupération des informations utilisateur." });
   }
 });
+//route d'incrementation 
+// Route pour incrémenter le compteur de téléchargements de vCard
+app.post('/api/users/:userId/increment-download', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Recherche de l'utilisateur dans la base de données par son ID
+    const user = await User.findById(userId);
+
+    if (user) {
+      // Incrémenter le compteur de téléchargements
+      user.vcardDownloadsCount += 1;
+      await user.save();
+
+      res.status(200).json({ message: "Le compteur de téléchargements a été incrémenté avec succès." });
+    } else {
+      // Si l'utilisateur n'est pas trouvé, renvoyer une réponse avec un statut 404
+      res.status(404).json({ error: "Utilisateur non trouvé." });
+    }
+  } catch (error) {
+    // En cas d'erreur, renvoyer une réponse avec un statut 500
+    console.error('Erreur lors de l\'incrémentation du compteur de téléchargements :', error);
+    res.status(500).json({ error: "Une erreur s'est produite lors de l'incrémentation du compteur de téléchargements." });
+  }
+});
+
+
+app.put('/api/users/:userId/increment-visits', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    console.log(`Incrémentation des visites pour l'utilisateur avec l'ID : ${userId}`);
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $inc: { visitscount: 1 } },
+      { new: true }
+    );
+
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ error: "Utilisateur non trouvé." });
+    }
+  } catch (error) {
+    console.error('Erreur lors de l\'incrémentation des visites du profil :', error);
+    res.status(500).json({ error: "Une erreur s'est produite lors de l'incrémentation des visites du profil." });
+  }
+});
 
 // Route pour récupérer les informations de l'utilisateur par son ID
 app.get('/api/users/:userId', async (req, res) => {
@@ -207,7 +254,6 @@ const newUser = new User({
 
   });
 
-  //mettre à jour les donnée de l'utilisateur 
   // Route pour mettre à jour le profil d'un utilisateur par son ID
   app.put('/edit/profil/:userId', async (req, res) => {
     try {

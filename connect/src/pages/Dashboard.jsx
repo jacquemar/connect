@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 const Dashboard = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
+  const [publicProfileUrl, setPublicProfileUrl] = useState('');
 
 
   useEffect(() => {
@@ -31,6 +32,7 @@ const Dashboard = () => {
       axios.get(`${API_URL}/api/users/${userId}`)
         .then((response) => {
           setUserData(response.data);
+          setPublicProfileUrl(`connect2card.com/profile/${response.data._id}`);
         })
         .catch(error => {
           console.error('Erreur lors de la récupération des informations utilisateur:', error);
@@ -52,7 +54,7 @@ const Dashboard = () => {
     }, 1000);
     toast.error("Votre session a expiré. Veuillez vous reconnecter.");
   };
-
+console.log(userData)
   const handleProfil = () => {
     if (userData && userData._id) {
       const consulterProfil = "/profile/" + userData._id;
@@ -62,7 +64,6 @@ const Dashboard = () => {
       toast.error("Erreur lors de la redirection vers le profil utilisateur.");
     }
   };
-
     return (
         <>
 <ProtectedRoute>        <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -189,7 +190,7 @@ const Dashboard = () => {
     <div className="relative">
         <label htmlFor="npm-install-copy-text" className="text-center">Lien publique</label>
         
-        <input id="copy" type="text" className="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm text-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" />
+        <input id="copy" type="text" className="col-span-6 bg-white border border-gray-300 text-gray-500 text-sm text-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value={publicProfileUrl} />
         
     </div>
 </div>

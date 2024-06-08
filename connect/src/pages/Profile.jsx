@@ -24,21 +24,38 @@ function Profile() {
   const { userId } = useParams();
 
 
+
+  const handleProfileView = (userId) => {
+    if (!userId) return;
+    axios.put(`${API_URL}/api/users/${userId}/increment-visits`)
+      .then((response) => {
+        console.log('Nombre de visites incrémenté');
+        // Effectuez des actions supplémentaires si nécessaire
+      })
+      .catch((error) => {
+        console.error('Erreur lors de l\'incrémentation des visites :', error);
+        // Gérez les erreurs si nécessaire
+      });
+  };
+
   useEffect(() => {
-    // Utilisez une requête HTTP GET pour récupérer les informations de l'utilisateur
+    handleProfileView(userId);
+  }, [userId]);
+
+  useEffect(() => {
+    // Récupérer les informations de l'utilisateur
     axios.get(`${API_URL}/api/users/${userId}`)
       .then(response => {
         setUserData(response.data);
-        console.log(userData)
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des informations utilisateur:', error);
-        // Gérer les erreurs si nécessaire
       });
   }, [userId]);
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (userData) {
+      await axios.post(`${API_URL}/api/users/${userData._id}/increment-download`);
       const vcard = new vCardsJS();
       vcard.firstName = userData.nomComplet;
       vcard.email = userData.mail;
