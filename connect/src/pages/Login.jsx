@@ -11,6 +11,7 @@ const Login = () => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const navigate = useNavigate();
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -19,7 +20,11 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault(); // Empêche le formulaire de se soumettre normalement
   
-    
+    setIsDisabled(true);
+    setTimeout(() => {
+      setIsDisabled(false);
+    }, 5000);
+
 
     try {
       // Effectuer une requête HTTP POST vers backend
@@ -127,8 +132,8 @@ const Login = () => {
       <div>
         <button
           type="submit"
-          className="flex w-full justify-center rounded-md bg-gradient-to-r from-cyan-600 to-green-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-cyan-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
+          className="flex w-full justify-center disabled:bg-black rounded-md bg-gradient-to-r from-cyan-600 to-green-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-cyan-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          disabled={isDisabled}>
           Se connecter
         </button>
       </div>

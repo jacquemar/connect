@@ -1,6 +1,6 @@
 import logoColor from "../assets/icons/COLOR-LOGO-CONNECT.svg";
 import API_URL from "../config"; 
-import connectCard from "../assets/telpng.png";
+import connectCard from "../assets/telpng2.png";
 import phone from "../assets/phone.jpg";
 import carte from "../assets/carte.jpg";
 import { Link } from "react-router-dom";
@@ -16,7 +16,7 @@ function Home() {
                 </a>
                 <div className="flex m items-center mt-4 lg:order-2">
                 <Link to="/login"> <a href="#" className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Se connecter</a> </Link>
-                <Link to="/login">   <a href="#" className="text-white bg-gradient-to-r from-cyan-600 to-green-400 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Commencer</a></Link> 
+                <Link to="/#">   <a href="#" className="text-white bg-gradient-to-r from-cyan-600 to-green-400 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">S'inscrire</a></Link> 
                     <button data-collapse-toggle="mobile-menu-2" type="button" className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
                         <span className="sr-only">Open menu</span>
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path></svg>
@@ -43,11 +43,11 @@ function Home() {
     <section className="bg-white dark:bg-gray-900">
         <div className="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
             <div className="mr-auto place-self-center lg:col-span-7">
-                <h1 className="max-w-2xl mb-4 text-5xl font-extrabold leading-none md:text-5xl xl:text-6xl dark:text-white">Smart Digital Business Card</h1>
-                <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">Entrez dans la nouvelle ère du networking avec CONNECT, la carte de visite sans contact,
-                 juste un scan pour partager instantanément tout vos réseaux sociaux, vos adresses geographique, e-mail, et numéro de téléphone partout ou vous passez</p>
+                <h1 className="max-w-2xl mb-4 text-5xl font-extrabold leading-none md:text-5xl xl:text-6xl dark:text-white">Connectez vous au monde entier</h1>
+                <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">La nouvelle ère du networking avec CONNECT, la carte de visite sans contact,
+                partager instantanément tout vos réseaux, mail, et numéro de téléphone en un seul geste</p>
                 <Link to="/login">  <a href="#" className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-gradient-to-r from-cyan-600 to-green-400 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
-                    Se connecter
+                    Démarrer
                     <svg className="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                 </a>
                 </Link>
@@ -63,16 +63,16 @@ function Home() {
         <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
             <div className="max-w-screen-md mb-8 lg:mb-16">
                 <h2 className="mb-4 text-4xl font-extrabold text-gray-900 dark:text-white">Conçue pour Simplifier</h2>
-                <p className="text-gray-500 sm:text-xl dark:text-gray-400">simple, partage du contact instantané, achat en une seule fois et disponibla à vie, eco-friendly, facile à mettre à jour et à customiser
-                networking efficace, et sert de page de branding, regroupe tout vos contact business en une place, 6 raisons d'adopter CONNECT.</p>
+                <p className="text-gray-500 sm:text-xl dark:text-gray-400">Partage en un seul geste, facile à mettre à jour et à customiser
+                regroupe tout vos réseaux en un seul endroit, 6 raisons d'adopter CONNECT.</p>
             </div>
             <div className="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
                 <div>
                     <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-blue-100 lg:h-12 lg:w-12 dark:bg-blue-900">
                         <svg className="w-5 h-5 text-blue-600 lg:w-6 lg:h-6 dark:text-blue-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
                     </div>
-                    <h3 className="mb-2 text-xl font-bold dark:text-white">NETWORKING</h3>
-                    <p className="text-gray-500 dark:text-gray-400">Carte de visite digitale pour le networking, CONNECT facilite le partage des coordonnées et contacts </p>
+                    <h3 className="mb-2 text-xl font-bold dark:text-white">Entrepreneurs</h3>
+                    <p className="text-gray-500 dark:text-gray-400">Oubliez les lots de carte de visite papier encombrant, adoptez CONNECT !</p>
                 </div>
                 <div>
                     <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-blue-100 lg:h-12 lg:w-12 dark:bg-blue-900">
@@ -81,7 +81,7 @@ function Home() {
 </svg>
                     </div>
                     <h3 className="mb-2 text-xl font-bold dark:text-white">Partagez tout</h3>
-                    <p className="text-gray-500 dark:text-gray-400">CONNECT vous permet de directement depuis un simple lien de partager votre profil complet</p>
+                    <p className="text-gray-500 dark:text-gray-400">CONNECT vous permet de partager votre profil complet en un seul geste </p>
                 </div>
                 </div>
         </div>
