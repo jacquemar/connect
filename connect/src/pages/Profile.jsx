@@ -16,18 +16,19 @@ import telegram from "../assets/icons/telegram-icon.svg";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Helmet } from "react-helmet-async";
 import vCardsJS from "vcards-js"
 
 
 function Profile() {
   const [userData, setUserData] = useState("");
-  const { userId } = useParams();
+  const { userName } = useParams();
 
 
 
-  const handleProfileView = (userId) => {
-    if (!userId) return;
-    axios.put(`${API_URL}/api/users/${userId}/increment-visits`)
+  const handleProfileView = (userName) => {
+    if (!userName) return;
+    axios.put(`${API_URL}/api/users/${userName}/increment-visits`)
       .then((response) => {
         console.log('Nombre de visites incrémenté');
         // Effectuez des actions supplémentaires si nécessaire
@@ -39,19 +40,19 @@ function Profile() {
   };
 
   useEffect(() => {
-    handleProfileView(userId);
-  }, [userId]);
+    handleProfileView(userName);
+  }, [userName]);
 
   useEffect(() => {
     // Récupérer les informations de l'utilisateur
-    axios.get(`${API_URL}/api/users/${userId}`)
+    axios.get(`${API_URL}/api/users/${userName}`)
       .then(response => {
         setUserData(response.data);
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des informations utilisateur:', error);
       });
-  }, [userId]);
+  }, [userName]);
 
   const handleDownload = async () => {
     if (userData) {
@@ -61,14 +62,43 @@ function Profile() {
       vcard.email = userData.mail;
       vcard.homePhone = userData.phoneNumber;
       vcard.title = userData.titre;
-
-      if (userData.photoProfilUrl) {
-        vcard.photo.attachFromUrl(userData.photoUrl, 'JPEG'); // Remplacez 'JPEG' par le format de votre image si nécessaire
+      if (userData.instagram) {
+        vcard.socialUrls['Instagram'] = userData.instagram;
+    }
+      if (userData.twitter) {
+        vcard.socialUrls['Twitter'] = userData.twitter;
+    }
+      if (userData.snapchat) {
+        vcard.socialUrls['Snapchat'] = userData.snapchat;
+    }
+      if (userData.snapchat) {
+        vcard.socialUrls['Snapchat'] = userData.snapchat;
+    }
+      if (userData.whatsapp) {
+        vcard.socialUrls['Whatsapp'] = userData.whatsapp;
+    }
+      if (userData.tiktok) {
+        vcard.socialUrls['Tiktok'] = userData.tiktok;
+    }
+      if (userData.youtube) {
+        vcard.socialUrls['Youtube'] = userData.youtube;
+    }
+      if (userData.pinterest) {
+        vcard.socialUrls['Pinterest'] = userData.pinterest;
+    }
+      if (userData.behance) {
+        vcard.socialUrls['Behance'] = userData.behance;
+    }
+      if (userData.telegram) {
+        vcard.socialUrls['Telegram'] = userData.telegram;
+    }
+      if (userData.linkedIn) {
+        vcard.socialUrls['LinkedIn'] = userData.linkedIn;
     }
   
       // Convertir le vCard en chaîne de caractères
-      const vcardString = vcard.getFormattedString();
-  
+      let vcardString = vcard.getFormattedString();
+      vcardString = vcardString.replace(/SOCIALPROFILE;CHARSET=UTF-8;/gm, "SOCIALPROFILE;");
       // Créer un objet Blob à partir de la chaîne de caractères
       const blob = new Blob([vcardString], { type: 'text/vcard' });
   
@@ -91,6 +121,20 @@ function Profile() {
 
   return (
     <div>
+            <Helmet>
+                <title>Connect Profil</title>
+                <meta name="description" content="C" />
+                <meta name="keywords" content="Rejoignez moi sur les réseaux ou ajoutez mon contact !"/>
+                <link rel="canonical" href="https://connect2card.com"/>
+                <meta property="og:title" content="Connect Card" />
+                <meta property="og:description" content="Carte de visite 100% digital" />
+                <meta property="og:image" content="https://connect2card.com/assets/bg-connect-BrHsARTI.jpg" />
+                <meta property="og:url" content="https://connect2card.com" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Card de visite 100% Digital" />
+                <meta name="twitter:description" content="Rejoignez moi sur les réseaux ou ajoutez mon contact !" />
+                <meta name="twitter:image" content="https://connect2card.com/assets/bg-connect-BrHsARTI.jpg" />
+            </Helmet>
 
       <div className="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto mt-16 bg-white shadow-xl rounded-lg text-gray-900">
         <div className="rounded-t-lg h-32 overflow-hidden">

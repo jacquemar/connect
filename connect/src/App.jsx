@@ -16,7 +16,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile/:userId" element={<Profile />} />
+        <Route path="/profile/:userName" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/demande" element={<Demande />} />
         <Route path="/dashboard/edit" element={<ProtectedRoute><Edit /></ProtectedRoute>} />

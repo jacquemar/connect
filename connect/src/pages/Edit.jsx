@@ -52,7 +52,7 @@ const [isBehanceChecked, setIsBehanceChecked] = useState(false);
 const [isTelegramChecked, setIsTelegramChecked] = useState(false);
 
 
-const [userData, setUserData] = useState(false);
+const [userData, setUserData] = useState("false");
 const navigate = useNavigate();
 const logoutUser = () => {
     localStorage.removeItem('token');
@@ -77,10 +77,11 @@ useEffect(() => {
 			}, 1000);
 		}
   
-		const userId = decodedToken.userId;
-		axios.get(`${API_URL}/api/users/${userId}`)
+		const userName = decodedToken.userName;
+		axios.get(`${API_URL}/api/users/${userName}`)
 		.then((response) => {
 			setUserData(response.data);
+			console.log(response.data)
 		})
 		.catch(error => {
 			logoutUser();
@@ -90,7 +91,7 @@ useEffect(() => {
 	} catch (error) {
 		console.error('Erreur lors du décodage du token:', error);
 		setTimeout(() => {
-			navigate("/login");
+			navigate("/Dashboard");
 		}, 1000);
 	}
 	};
@@ -252,9 +253,9 @@ const handlePhoneNumberChange = (event) => {
 	
 		try {
 			const token = localStorage.getItem('token');
-			const userId = jwtDecode(token).userId;
+			const userName = jwtDecode(token).userName;
 			// Envoi des données du formulaire au serveur
-			const response = await axios.put(`${API_URL}/edit/profil/${userId}`, {
+			const response = await axios.put(`${API_URL}/edit/profil/${userName}`, {
 				photoProfilURL,
 				banniereURL,
 				nomComplet,
@@ -354,7 +355,7 @@ const handlePhoneNumberChange = (event) => {
 								<input placeholder="Avocat d'affaire ⚖️" onChange={handleTitreDataChange} value={titre} className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4" type="text" name="titre" id="titre"></input>	
 							</div>
 						</div>
-            <h3 className="mb-4 font-semibold text-gray-900 dark:text-white">Réseaux Sociaux</h3>
+            <h3 className="mb-4 font-semibold text-gray-900 dark:text-white">Réseaux Sociaux <span className="text-gray-300 text-xs pt-1 italic block">(cochez uniquement vos réseaux sociaux utilisés)</span></h3>
 
             <div className="mb-4"><label className=" items-center me-5 cursor-pointer">
   <input type="checkbox" onChange={handleFacebookInputChange} checked={isFacebookChecked} className="sr-only peer"></input>
@@ -529,7 +530,7 @@ const handlePhoneNumberChange = (event) => {
 </div>
 <div className="md:flex md:flex-row md:space-x-4 w-full text-xs">
 	<div className="w-full flex flex-col mb-3">
-		<label className="font-semibold text-gray-600 py-2">Numéro de téléphone</label>
+		<label className="font-semibold text-gray-600 py-2">Numéro de téléphone <span className="text-gray-300 pt-1 text-xS italic block">(ajoutez l'indicatif pays)</span></label>
 		<input placeholder="+2250102030405" value={phoneNumber}
                 onChange={handlePhoneNumberChange} className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4" type="number" name="telephone" id="tel"></input>
 	</div>

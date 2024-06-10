@@ -28,11 +28,12 @@ const Dashboard = () => {
       }
   
       // Récupérez les informations utilisateur sans vérifier l'expiration du token
-      const userId = jwtDecode(token).userId; 
-      axios.get(`${API_URL}/api/users/${userId}`)
+      const userName = jwtDecode(token).userName; 
+      axios.get(`${API_URL}/api/users/${userName}`)
         .then((response) => {
           setUserData(response.data);
-          setPublicProfileUrl(`connect2card.com/profile/${response.data._id}`);
+        
+          setPublicProfileUrl(`connect2card.com/profile/${response.data.userName}`);
         })
         .catch(error => {
           console.error('Erreur lors de la récupération des informations utilisateur:', error);
@@ -54,10 +55,10 @@ const Dashboard = () => {
     }, 1000);
     toast.error("Votre session a expiré. Veuillez vous reconnecter.");
   };
-console.log(userData)
+
   const handleProfil = () => {
     if (userData && userData._id) {
-      const consulterProfil = "/profile/" + userData._id;
+      const consulterProfil = "/profile/" + userData.userName;
       navigate(consulterProfil);
     } else {
       console.error("L'utilisateur n'a pas d'ID valide.");

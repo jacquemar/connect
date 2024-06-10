@@ -114,7 +114,7 @@ mongoose.connect("mongodb+srv://jacquemar:o85pxev28Rl0qapG@ConnectDb.mht5fkp.mon
     }
 
     // Crée un token JWT
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userName: user.userName }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     // Renvoie le token JWT
     res.json({ token });
@@ -139,10 +139,10 @@ app.get('/api/user', async (req, res) => {
 
     // Décoder le token JWT pour extraire l'identifiant de l'utilisateur
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decodedToken.userId;
+    const userName = decodedToken.userName;
 
     // Recherche de l'utilisateur dans la base de données par son ID
-    const user = await User.findById(userId);
+    const user = await User.findOne({userName: userName});
 
     if (user) {
       // Si l'utilisateur est trouvé, renvoyer ses informations
@@ -159,12 +159,12 @@ app.get('/api/user', async (req, res) => {
 });
 //route d'incrementation 
 // Route pour incrémenter le compteur de téléchargements de vCard
-app.post('/api/users/:userId/increment-download', async (req, res) => {
+app.post('/api/users/:userName/increment-download', async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userName } = req.params;
 
     // Recherche de l'utilisateur dans la base de données par son ID
-    const user = await User.findById(userId);
+    const user = await User.findById(userName);
 
     if (user) {
       // Incrémenter le compteur de téléchargements
@@ -184,12 +184,12 @@ app.post('/api/users/:userId/increment-download', async (req, res) => {
 });
 
 
-app.put('/api/users/:userId/increment-visits', async (req, res) => {
+app.put('/api/users/:userName/increment-visits', async (req, res) => {
   try {
-    const { userId } = req.params;
-    console.log(`Incrémentation des visites pour l'utilisateur avec l'ID : ${userId}`);
-    const user = await User.findByIdAndUpdate(
-      userId,
+    const { userName } = req.params;
+    console.log(`Incrémentation des visites pour l'utilisateur avec l'UserName : ${userName}`);
+    const user = await User.findOneAndUpdate(
+      { userName: userName }, 
       { $inc: { visitscount: 1 } },
       { new: true }
     );
@@ -205,10 +205,11 @@ app.put('/api/users/:userId/increment-visits', async (req, res) => {
   }
 });
 
-// Route pour récupérer les informations de l'utilisateur par son ID
-app.get('/api/users/:userId', async (req, res) => {
+// Route pour récupérer les informations de l'utilisateur par son userName
+app.get('/api/users/:userName', async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId);
+    const { userName } = req.params; 
+    const user = await User.findOne({ userName: userName }); 
     if (user) {
       res.status(200).json(user);
     } else {
@@ -255,12 +256,12 @@ const newUser = new User({
   });
 
   // Route pour mettre à jour le profil d'un utilisateur par son ID
-  app.put('/edit/profil/:userId', async (req, res) => {
+  app.put('/edit/profil/:userName', async (req, res) => {
     try {
-      const userId = req.params.userId;
+      const userName = req.params.userName;
   
       // Récupérer l'utilisateur à mettre à jour
-      const user = await User.findById(userId);
+      const user = await User.findOne({ userName });
       if (!user) {
         return res.status(404).json({ error: 'Utilisateur non trouvé' });
       }

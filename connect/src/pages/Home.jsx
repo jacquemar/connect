@@ -4,9 +4,25 @@ import connectCard from "../assets/telpng2.png";
 import phone from "../assets/phone.jpg";
 import carte from "../assets/carte.jpg";
 import { Link } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
+
 function Home() {
   return (
     <div>
+        <Helmet>
+                <title>Connect Card</title>
+                <meta name="description" content="Renforcez votre présence en ligne avec la carte de visite 100% digital" />
+                <meta name="keywords" content="carte de visite, digital, business card, connect"/>
+                <link rel="canonical" href="https://connect2card.com"/>
+                <meta property="og:title" content="Connect Card" />
+                <meta property="og:description" content="Carte de visite 100% digital" />
+                <meta property="og:image" content="https://connect2card.com/assets/bg-connect-BrHsARTI.jpg" />
+                <meta property="og:url" content="https://connect2card.com" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Card de visite 100% Digital" />
+                <meta name="twitter:description" content="Renforcez votre présence en ligne avec la carte de visite 100% digital" />
+                <meta name="twitter:image" content="https://connect2card.com/assets/bg-connect-BrHsARTI.jpg" />
+            </Helmet>
      <header>
         <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
             <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
