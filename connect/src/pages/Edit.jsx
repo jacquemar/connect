@@ -81,7 +81,7 @@ useEffect(() => {
 		axios.get(`${API_URL}/api/users/${userName}`)
 		.then((response) => {
 			setUserData(response.data);
-			console.log(response.data)
+			
 		})
 		.catch(error => {
 			logoutUser();
@@ -98,6 +98,7 @@ useEffect(() => {
   
 	getUserData();
   }, []);
+  
   
 
 const handleBanniereUpload = async (event) => {
@@ -249,55 +250,105 @@ const handlePhoneNumberChange = (event) => {
 	};
 
 	const handleSubmit = async (event) => {
-		event.preventDefault()
-	
+		event.preventDefault();
+	  
 		try {
-			const token = localStorage.getItem('token');
-			const userName = jwtDecode(token).userName;
-			// Envoi des données du formulaire au serveur
-			const response = await axios.put(`${API_URL}/edit/profil/${userName}`, {
-				photoProfilURL,
-				banniereURL,
-				nomComplet,
-				titre,
-				phoneNumber,
-				service1,
-				service2,
-				service3,
-				service4,
-				facebook: isFacebookChecked ? facebook : null,
-				instagram: isInstagramChecked ? instagram : null,
-				snapchat: isSnapchatChecked ? snapchat : null,
-				youtube: isYoutubeChecked ? youtube : null,
-				tiktok: isTiktokChecked ? tiktok : null,
-				twitter: isTwitterChecked ? twitter : null,
-				whatsapp: isWhatsappChecked ? whatsapp : null,
-				pinterest: isPinterestChecked ? pinterest : null,
-				linkedin: isLinkedinChecked ? linkedin : null,
-				mail: isEmailChecked ? email : null,
-				behance: isBehanceChecked ? behance : null,
-				telegram: isTelegramChecked ? telegram : null,
-			});
-	
-			if (response) {
-				toast.success("Profil mis à jour avec succès !");
-				setTimeout(() => {
-					navigate("/dashboard"); // Redirection vers la page de tableau de bord
-				}, 1000);
-			} else {
-				// Gestion des erreurs si nécessaire
-			}
+		  const token = localStorage.getItem('token');
+		  const userName = jwtDecode(token).userName;
+	  
+		  // Récupération des données actuelles du profil depuis le serveur
+		  const currentProfileResponse = await axios.get(`${API_URL}/api/users/${userName}`);
+		  const currentProfile = currentProfileResponse.data;
+	  
+		  // Comparez les données du formulaire avec les données actuelles pour déterminer les modifications
+		  const updatedFields = {};
+	  
+		  if (photoProfilURL && photoProfilURL !== currentProfile.photoProfilURL) {
+			updatedFields.photoProfilURL = photoProfilURL;
+		  }
+		  if (banniereURL && banniereURL !== currentProfile.banniereURL) {
+			updatedFields.banniereURL = banniereURL;
+		  }
+		  if (nomComplet && nomComplet !== currentProfile.nomComplet) {
+			updatedFields.nomComplet = nomComplet;
+		  }
+		  if (titre && titre !== currentProfile.titre) {
+			updatedFields.titre = titre;
+		  }
+		  if (phoneNumber && phoneNumber !== currentProfile.phoneNumber) {
+			updatedFields.phoneNumber = phoneNumber;
+		  }
+		  if (service1 && service1 !== currentProfile.service1) {
+			updatedFields.service1 = service1;
+		  }
+		  if (service2 && service2 !== currentProfile.service2) {
+			updatedFields.service2 = service2;
+		  }
+		  if (service3 && service3 !== currentProfile.service3) {
+			updatedFields.service3 = service3;
+		  }
+		  if (service4 && service4 !== currentProfile.service4) {
+			updatedFields.service4 = service4;
+		  }
+		  if (isFacebookChecked && facebook && facebook !== currentProfile.facebook) {
+			updatedFields.facebook = facebook;
+		  }
+		  if (isInstagramChecked && instagram && instagram !== currentProfile.instagram) {
+			updatedFields.instagram = instagram;
+		  }
+		  if (isSnapchatChecked && snapchat && snapchat !== currentProfile.snapchat) {
+			updatedFields.snapchat = snapchat;
+		  }
+		  if (isYoutubeChecked && youtube && youtube !== currentProfile.youtube) {
+			updatedFields.youtube = youtube;
+		  }
+		  if (isTiktokChecked && tiktok && tiktok !== currentProfile.tiktok) {
+			updatedFields.tiktok = tiktok;
+		  }
+		  if (isTwitterChecked && twitter && twitter !== currentProfile.twitter) {
+			updatedFields.twitter = twitter;
+		  }
+		  if (isWhatsappChecked && whatsapp && whatsapp !== currentProfile.whatsapp) {
+			updatedFields.whatsapp = whatsapp;
+		  }
+		  if (isPinterestChecked && pinterest && pinterest !== currentProfile.pinterest) {
+			updatedFields.pinterest = pinterest;
+		  }
+		  if (isLinkedinChecked && linkedin && linkedin !== currentProfile.linkedin) {
+			updatedFields.linkedin = linkedin;
+		  }
+		  if (isEmailChecked && email && email !== currentProfile.mail) {
+			updatedFields.mail = email;
+		  }
+		  if (isBehanceChecked && behance && behance !== currentProfile.behance) {
+			updatedFields.behance = behance;
+		  }
+		  if (isTelegramChecked && telegram && telegram !== currentProfile.telegram) {
+			updatedFields.telegram = telegram;
+		  }
+	  
+		  // Envoi des champs modifiés au serveur pour mise à jour
+		  const response = await axios.put(`${API_URL}/edit/profil/${userName}`, updatedFields);
+	  
+		  if (response) {
+			toast.success("Profil mis à jour avec succès !");
+			setTimeout(() => {
+			  navigate("/dashboard"); // Redirection vers la page de tableau de bord
+			}, 1000);
+		  } else {
+			
+		  }
 		} catch (error) {
-			if (error.response) {
-				// L'erreur provient de la réponse HTTP du serveur
-				toast.error(error.response.data.error);
-			} else {
-				// Une autre erreur s'est produite
-				toast.error("Une erreur est survenue lors de l'ajout de l'utilisateur !");
-			}
+		  if (error.response) {
+			
+			toast.error(error.response.data.error);
+		  } else {
+			// Une autre erreur s'est produite
+			toast.error("Une erreur est survenue lors de la mise à jour du profil !");
+		  }
 		}
-	};
-
+	  };
+	  
 
 	
 

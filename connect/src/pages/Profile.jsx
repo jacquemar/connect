@@ -17,25 +17,24 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Helmet } from "react-helmet-async";
-import vCardsJS from "vcards-js"
+import vCardsJS from "vcards-js";
+import Loading from '../components/Loading';
 
 
 function Profile() {
   const [userData, setUserData] = useState("");
   const { userName } = useParams();
-
-
-
+  const [loading, setLoading] = useState(true);
   const handleProfileView = (userName) => {
     if (!userName) return;
     axios.put(`${API_URL}/api/users/${userName}/increment-visits`)
       .then((response) => {
         console.log('Nombre de visites incrémenté');
-        // Effectuez des actions supplémentaires si nécessaire
+        
       })
       .catch((error) => {
         console.error('Erreur lors de l\'incrémentation des visites :', error);
-        // Gérez les erreurs si nécessaire
+       
       });
   };
 
@@ -48,9 +47,11 @@ function Profile() {
     axios.get(`${API_URL}/api/users/${userName}`)
       .then(response => {
         setUserData(response.data);
+        setLoading(false);
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des informations utilisateur:', error);
+        setLoading(false);
       });
   }, [userName]);
 
@@ -116,11 +117,16 @@ function Profile() {
     }
   };
   
-  
+  if (loading) {
+    return <Loading />;
+  }
 
 
   return (
+
+    
     <div>
+      
             <Helmet>
                 <title>Connect Profil</title>
                 <meta name="description" content="C" />
@@ -135,7 +141,7 @@ function Profile() {
                 <meta name="twitter:description" content="Rejoignez moi sur les réseaux ou ajoutez mon contact !" />
                 <meta name="twitter:image" content="https://connect2card.com/assets/bg-connect-BrHsARTI.jpg" />
             </Helmet>
-
+           
       <div className="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto mt-16 bg-white shadow-xl rounded-lg text-gray-900">
         <div className="rounded-t-lg h-32 overflow-hidden">
         {userData && (userData.banniereURL !== '' ? (
@@ -153,7 +159,7 @@ function Profile() {
     <img className="object-cover object-top w-full" src={profileImage} alt="Bannière" />
   )
 ))}
-        </div>
+     </div>
         <div className="text-center mt-2">
           <h2 className="font-semibold">{userData.nomComplet}</h2>
           <p className="text-gray-500">{userData.titre}</p>

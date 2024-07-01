@@ -4,7 +4,8 @@ import API_URL from "../config";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { format } from "date-fns";
 
 const Demande = () => {
 
@@ -13,41 +14,48 @@ const Demande = () => {
     const [prenom, setPrenom] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [password, setPassword] = useState('');
     // const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
 
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
-        // setLoading(true);
-        try {
-            const response = await axios.post(`${API_URL}/create-demande`, {
-              userName: userName,
-              email: email,
-              nom: nom,
-              prenom: prenom,
-              phoneNumber: phoneNumber,
-            });
+      event.preventDefault();
+      const currentDate = format(new Date(), "dd/MM/yyyy HH:mm:ss");
       
-            if (response.ok) {
-              toast.success("Utilisateurs ajouté avec succès ! ");
-              setUsername("");
-      setEmail("");
-      setPassword("");
-              setTimeout(() => {
-                navigate("/login"); // Naviguer vers la page de connexion
-              }, 2000);
-            } else {
-              // Gestion des erreurs si nécessaire
-            }
-          } catch (error) {
-            if (error.response) {
-              // L'erreur provient de la réponse HTTP du serveur
-              toast.error(error.response.data.error);
-            } else {
-              // Une autre erreur s'est produite
-              toast.error("Une erreur est survenue lors de l'ajout de l'utilisateur !");
-            }}
+      try {
+        const response = await axios.post(`${API_URL}/create-demande`, {
+          userName,
+          email,
+          nom,
+          prenom,
+          phoneNumber,
+          password,
+          date: currentDate,
+        });
+  
+        if (response.status === 201) {
+          toast.success("Demande bien prise en compte !");
+          setUsername('');
+          setEmail('');
+          setNom('');
+          setPrenom('');
+          setPhoneNumber('');
+          setPassword('');
+  
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
+        }
+      } catch (error) {
+        if (error.response) {
+          // L'erreur provient de la réponse HTTP du serveur
+          toast.error(error.response.data.error);
+        } else {
+          // Une autre erreur s'est produite
+          toast.error("Une erreur est survenue lors de l'ajout de votre demande !");
+        }
+      }
     };
     return (
         <>
@@ -61,7 +69,7 @@ const Demande = () => {
                 alt="Your Company"
               />
               <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                Demande de compte
+                Demande de carte
               </h2>
             </div>
     
@@ -142,6 +150,22 @@ const Demande = () => {
                       name="phone"
                       type="name"
                       onChange={(e) => setPhoneNumber(e.target.value)}
+                      required
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-400 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                    Mot de passe
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      onChange={(e) => setPassword(e.target.value)}
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-400 sm:text-sm sm:leading-6"
                     />

@@ -141,7 +141,7 @@ const Login = () => {
     
               <p className="mt-10 text-center text-sm text-gray-500">
                 Pas encore membre ?
-                <a href="/" className="font-semibold leading-6 text-green-400 hover:text-cyan-600">
+                <a href="/demande" className="font-semibold leading-6 text-green-400 hover:text-cyan-600">
                   Rejoignez-nous
                 </a>
               </p>

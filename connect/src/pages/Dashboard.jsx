@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
   import {jwtDecode} from "jwt-decode";
   import ProtectedRoute from "../components/ProtectedRoutes";
   import { useNavigate } from "react-router-dom";
-
+import Loading from "../components/Loading";
 import { ToastContainer, toast } from "react-toastify";
 
 
@@ -16,6 +16,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [publicProfileUrl, setPublicProfileUrl] = useState('');
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
@@ -32,11 +33,12 @@ const Dashboard = () => {
       axios.get(`${API_URL}/api/users/${userName}`)
         .then((response) => {
           setUserData(response.data);
-        
+          setLoading(false);
           setPublicProfileUrl(`connect2card.com/profile/${response.data.userName}`);
         })
         .catch(error => {
           console.error('Erreur lors de la récupération des informations utilisateur:', error);
+          setLoading(false);
           toast.error('Erreur lors de la récupération des informations utilisateur');
          logoutUser()
            
@@ -65,6 +67,10 @@ const Dashboard = () => {
       toast.error("Erreur lors de la redirection vers le profil utilisateur.");
     }
   };
+  
+  if (loading) {
+    return <Loading />;
+  }
     return (
         <>
 <ProtectedRoute>        <nav className="bg-white border-gray-200 dark:bg-gray-900">

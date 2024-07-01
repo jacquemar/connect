@@ -5,7 +5,7 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const path = require('path');
-
+const axios = require('axios');
 const bcrypt = require('bcrypt');
 require("dotenv").config();
 const multer = require('multer');
@@ -19,6 +19,7 @@ const cors = require('cors');
 
 const app = express();
 const User = require('./models/Users');
+const Demande = require('./models/Demandes');
 app.use(cors());
 app.use(session({
   secret: process.env.JWT_SECRET,
@@ -80,6 +81,7 @@ mongoose.connect("mongodb+srv://jacquemar:o85pxev28Rl0qapG@ConnectDb.mht5fkp.mon
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
   const flash = require('connect-flash');
+const Demandes = require('./models/Demandes');
   app.use(flash());
 
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -100,6 +102,57 @@ mongoose.connect("mongodb+srv://jacquemar:o85pxev28Rl0qapG@ConnectDb.mht5fkp.mon
       done(error);
     }
   });
+
+  const ORANGE_API_URL = process.env.ORANGE_API_URL;
+  const CLIENT_ID = process.env.CLIENT_ID;
+  const CLIENT_SECRET = process.env.CLIENT_SECRET;
+  const COUNTRY_SENDER_NUMBER = "2250000";
+
+// Fonction pour obtenir l'access token
+const getAccessToken = async () => {
+  try {
+    const params = new URLSearchParams();
+    params.append('grant_type', 'client_credentials');
+    
+    const response = await axios.post(`${ORANGE_API_URL}/oauth/v3/token`, params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic TXFyQVh6T0treE9XNGxjMkRpV2lXY25ESEd0Mkc0dnI6SzJVeHVPN0NmeGNhS3Rncg=='
+      },
+    });
+    
+    return response.data.access_token;
+   
+  } catch (error) {
+    console.error('Erreur lors de l\'obtention du token :', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+// Fonction pour envoyer le SMS
+const sendSMS = async (phoneNumber, message) => {
+  const accessToken = await getAccessToken();
+  const response = await axios.post(
+    `https://api.orange.com/smsmessaging/v2/outbound/tel%3A%2B2250000/requests`,
+    {
+      outboundSMSMessageRequest: {
+        address: `tel:+${phoneNumber}`,
+        senderAddress: `tel:+${COUNTRY_SENDER_NUMBER}`,
+        outboundSMSTextMessage: {
+          message: `${message}`,
+        },
+      },
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  return response.data;
+};
+
 
  app.post('/api/login', async (req, res) => {
   const { userName, password } = req.body;
@@ -221,7 +274,7 @@ app.get('/api/users/:userName', async (req, res) => {
   }
 });
 
-  app.post( "/create-user", async (req, res) => {
+app.post( "/create-user", async (req, res) => {
     try {
         // Recherche si l'utilisateur existe déjà dans la base de données
         const existingUser = await User.findOne({ userName: req.body.userName });
@@ -232,7 +285,7 @@ app.get('/api/users/:userName', async (req, res) => {
   // Hasher le mot de passe
   const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
   
-          // Créer un nouvel utilisateur
+          // Creation d'un nouvel utilisateur
 const newUser = new User({
     userName: req.body.userName,
     email: req.body.email,
@@ -255,7 +308,92 @@ const newUser = new User({
 
   });
 
-  // Route pour mettre à jour le profil d'un utilisateur par son ID
+  // Route pour approuver une demande
+app.post('/api/demandes/:id/approve', async (req, res) => {
+  try {
+    const demande = await Demande.findById(req.params.id);
+    if (!demande) {
+      return res.status(404).json({ message: 'Demande non trouvée' });
+    }
+    demande.status = 'approved';
+    await demande.save();
+
+    // Ajouter l'utilisateur à la collection 'users'
+    const newUser = new User({
+      userName: demande.userName,
+      phoneNumber: demande.phoneNumber,
+      password: demande.password,
+      email: demande.email,
+    });
+    await newUser.save();
+
+    res.status(200).json({ message: 'Demande approuvée avec succès' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors de l\'approbation de la demande' });
+  }
+});
+
+// Route pour rejeter une demande
+app.post('/api/demandes/:id/reject', async (req, res) => {
+  try {
+    const demande = await Demande.findById(req.params.id);
+    if (!demande) {
+      return res.status(404).json({ message: 'Demande non trouvée' });
+    }
+    demande.status = 'rejected';
+    await demande.save();
+
+    res.status(200).json({ message: 'Demande rejetée avec succès' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors du rejet de la demande' });
+  }
+});
+
+
+  app.get("/api/demandes", (req, res) => {
+    Demandes.find()
+      .sort({ orderDate: -1 })
+      .then((demande) => res.status(200).json(demande))
+      .catch((error) => res.status(400).json({ error }));
+  });
+
+  //route pour la demande de carte 
+  app.post( "/create-demande", async (req, res) => {
+    try {
+        // Recherche si l'utilisateur existe déjà dans la base de données
+        const existingUser = await User.findOne({ userName: req.body.userName });
+        if (existingUser) {
+            // Si l'utilisateur existe déjà
+            return res.status(400).json({ error: 'Cet utilisateur est déjà utilisée.' });
+        }
+  // Hasher le mot de passe
+  const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+  
+          // Creation d'une nouvelle demande
+const newDemande = new Demande({
+    userName: req.body.userName,
+    email: req.body.email,
+    phoneNumber: req.body.phoneNumber,
+    password: hashedPassword,
+    nom: req.body.nom,
+    prenom: req.body.prenom,
+    date: req.body.date
+  });
+
+  // Sauvegarder la nouvelle demande dans la base de données
+  await newDemande.save();
+  //await sendSMS(req.body.phoneNumber, `Félicitation ${req.body.userName} Votre demande de carte a bien été prise en compte. prochaine prochaine étape le paiement`);
+//réponse de succès
+res.status(201).json({ message: 'Demande enregistrée avec succès' });
+} catch (error) {
+  console.error('Erreur lors de l\'enregistrement de la demande :', error);
+  res.status(500).json({ error: 'Erreur serveur lors de l\'enregistrement de la demande.' });
+}
+  });
+
+  // Route pour mettre à jour le profil d'un utilisateur par son nom d'utilisateur
   app.put('/edit/profil/:userName', async (req, res) => {
     try {
       const userName = req.params.userName;
@@ -272,29 +410,29 @@ const newUser = new User({
         user.photoProfilURL = req.file.path;
       }
   
-      // Mettre à jour d'autres champs du profil avec les données reçues dans le corps de la requête
-      user.nomComplet = req.body.nomComplet;
-      user.titre = req.body.titre;
-      user.banniereURL = req.body.banniereURL;
-      user.photoProfilURL = req.body.photoProfilURL;
-      user.phoneNumber = req.body.phoneNumber;
-      user.facebook = req.body.facebook;
-      user.instagram = req.body.instagram;
-      user.snapchat = req.body.snapchat;
-      user.youtube = req.body.youtube;
-      user.tiktok = req.body.tiktok;
-      user.twitter = req.body.twitter;
-      user.whatsapp = req.body.whatsapp;
-      user.pinterest = req.body.pinterest;
-      user.linkedin = req.body.linkedin;
-      user.mail = req.body.mail;
-      user.behance = req.body.behance;
-      user.service1 = req.body.service1;
-      user.service2 = req.body.service2;
-      user.service3 = req.body.service3;
-      user.service4 = req.body.service4;
-      user.telegram = req.body.telegram;
-      // Mettre à jour d'autres champs de profil...
+      // Mettre à jour seulement les champs fournis dans le corps de la requête
+    if (req.body.nomComplet !== undefined) user.nomComplet = req.body.nomComplet;
+    if (req.body.titre !== undefined) user.titre = req.body.titre;
+    if (req.body.banniereURL !== undefined) user.banniereURL = req.body.banniereURL;
+    if (req.body.photoProfilURL !== undefined) user.photoProfilURL = req.body.photoProfilURL;
+    if (req.body.phoneNumber !== undefined) user.phoneNumber = req.body.phoneNumber;
+    if (req.body.facebook !== undefined) user.facebook = req.body.facebook;
+    if (req.body.instagram !== undefined) user.instagram = req.body.instagram;
+    if (req.body.snapchat !== undefined) user.snapchat = req.body.snapchat;
+    if (req.body.youtube !== undefined) user.youtube = req.body.youtube;
+    if (req.body.tiktok !== undefined) user.tiktok = req.body.tiktok;
+    if (req.body.twitter !== undefined) user.twitter = req.body.twitter;
+    if (req.body.whatsapp !== undefined) user.whatsapp = req.body.whatsapp;
+    if (req.body.pinterest !== undefined) user.pinterest = req.body.pinterest;
+    if (req.body.linkedin !== undefined) user.linkedin = req.body.linkedin;
+    if (req.body.mail !== undefined) user.mail = req.body.mail;
+    if (req.body.behance !== undefined) user.behance = req.body.behance;
+    if (req.body.service1 !== undefined) user.service1 = req.body.service1;
+    if (req.body.service2 !== undefined) user.service2 = req.body.service2;
+    if (req.body.service3 !== undefined) user.service3 = req.body.service3;
+    if (req.body.service4 !== undefined) user.service4 = req.body.service4;
+    if (req.body.telegram !== undefined) user.telegram = req.body.telegram;
+     
   
       // Enregistrer les modifications dans la base de données
       await user.save();
@@ -307,8 +445,6 @@ const newUser = new User({
       res.status(500).json({ error: 'Une erreur est survenue lors de la mise à jour du profil utilisateur' });
     }
   });
-  
-
 
 
 
