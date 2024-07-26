@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const nodemailer = require('nodemailer');
 const path = require('path');
 const axios = require('axios');
 const bcrypt = require('bcrypt');
@@ -16,9 +17,12 @@ const cloudinary = require("cloudinary").v2;
 const cloudconfig = require("./cloudinary");
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const cors = require('cors');
-
+const QRCode = require('qrcode');
+const exphbs = require('express-handlebars');
+const { Client } = require("@notionhq/client");
 const app = express();
 const User = require('./models/Users');
+const useragent = require('useragent');
 const Demande = require('./models/Demandes');
 app.use(cors());
 app.use(session({
@@ -26,7 +30,11 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+// Configuration moteur de templates Handlebars
 
+app.engine('handlebars', exphbs.engine({ extname: '.handlebars', defaultLayout: false }));
+app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
 // Configuration de Multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -38,7 +46,7 @@ const storage = multer.diskStorage({
     cb(null, uniqueSuffix + '-' + file.originalname);
   }
 });
-
+const notion = new Client({ auth: process.env.NOTION_TOKEN})
 const upload = multer({ storage: storage });
 
 // Middleware pour gérer le téléchargement de la bannière
@@ -82,6 +90,7 @@ mongoose.connect("mongodb+srv://jacquemar:o85pxev28Rl0qapG@ConnectDb.mht5fkp.mon
 
   const flash = require('connect-flash');
 const Demandes = require('./models/Demandes');
+const Users = require('./models/Users');
   app.use(flash());
 
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -103,55 +112,6 @@ const Demandes = require('./models/Demandes');
     }
   });
 
-  const ORANGE_API_URL = process.env.ORANGE_API_URL;
-  const CLIENT_ID = process.env.CLIENT_ID;
-  const CLIENT_SECRET = process.env.CLIENT_SECRET;
-  const COUNTRY_SENDER_NUMBER = "2250000";
-
-// Fonction pour obtenir l'access token
-const getAccessToken = async () => {
-  try {
-    const params = new URLSearchParams();
-    params.append('grant_type', 'client_credentials');
-    
-    const response = await axios.post(`${ORANGE_API_URL}/oauth/v3/token`, params, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic TXFyQVh6T0treE9XNGxjMkRpV2lXY25ESEd0Mkc0dnI6SzJVeHVPN0NmeGNhS3Rncg=='
-      },
-    });
-    
-    return response.data.access_token;
-   
-  } catch (error) {
-    console.error('Erreur lors de l\'obtention du token :', error.response ? error.response.data : error.message);
-    throw error;
-  }
-};
-
-// Fonction pour envoyer le SMS
-const sendSMS = async (phoneNumber, message) => {
-  const accessToken = await getAccessToken();
-  const response = await axios.post(
-    `https://api.orange.com/smsmessaging/v2/outbound/tel%3A%2B2250000/requests`,
-    {
-      outboundSMSMessageRequest: {
-        address: `tel:+${phoneNumber}`,
-        senderAddress: `tel:+${COUNTRY_SENDER_NUMBER}`,
-        outboundSMSTextMessage: {
-          message: `${message}`,
-        },
-      },
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-  return response.data;
-};
 
 
  app.post('/api/login', async (req, res) => {
@@ -176,9 +136,6 @@ const sendSMS = async (phoneNumber, message) => {
     res.status(500).json({ error: "Une erreur s'est produite lors de la connexion." });
   }
 });
-
-
-
 
 // Route pour récupérer les informations de l'utilisateur actuellement connecté
 app.get('/api/user', async (req, res) => {
@@ -236,6 +193,24 @@ app.post('/api/users/:userName/increment-download', async (req, res) => {
   }
 });
 
+// Route pour supprimer un user
+app.delete('/api/user/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Chercher la demande par son ID et la supprimer
+    const deletedUser = await Users.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'Utilisateur non trouvée' });
+    }
+
+    res.status(200).json({ message: 'Utilisateur supprimée avec succès' });
+  } catch (error) {
+    console.error('Erreur lors de la suppression Utilisateur :', error);
+    res.status(500).json({ message: 'Erreur lors de la suppression Utilisateur' });
+  }
+});
 
 app.put('/api/users/:userName/increment-visits', async (req, res) => {
   try {
@@ -317,17 +292,21 @@ app.post('/api/demandes/:id/approve', async (req, res) => {
     }
     demande.status = 'approved';
     await demande.save();
-
+    // Générer l'URL du profil
+    const profileUrl = `https://connect2card.com/profile/${demande.userName}`;
+    // Générer le QR code à partir de l'URL
+    const qrCodeImage = await QRCode.toDataURL(profileUrl);
     // Ajouter l'utilisateur à la collection 'users'
     const newUser = new User({
       userName: demande.userName,
       phoneNumber: demande.phoneNumber,
       password: demande.password,
       email: demande.email,
+      qrCode: qrCodeImage
     });
     await newUser.save();
 
-    res.status(200).json({ message: 'Demande approuvée avec succès' });
+    res.status(200).json({ message: 'Demande approuvée avec succès', qrCode: qrCodeImage });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Erreur lors de l\'approbation de la demande' });
@@ -351,6 +330,24 @@ app.post('/api/demandes/:id/reject', async (req, res) => {
   }
 });
 
+// Route pour supprimer une demande
+app.delete('/api/demandes/:id', async (req, res) => {
+  try {
+    const demandeId = req.params.id;
+
+    // Chercher la demande par son ID et la supprimer
+    const deletedDemande = await Demande.findByIdAndDelete(demandeId);
+
+    if (!deletedDemande) {
+      return res.status(404).json({ message: 'Demande non trouvée' });
+    }
+
+    res.status(200).json({ message: 'Demande supprimée avec succès' });
+  } catch (error) {
+    console.error('Erreur lors de la suppression de la demande :', error);
+    res.status(500).json({ message: 'Erreur lors de la suppression de la demande' });
+  }
+});
 
   app.get("/api/demandes", (req, res) => {
     Demandes.find()
@@ -359,39 +356,153 @@ app.post('/api/demandes/:id/reject', async (req, res) => {
       .catch((error) => res.status(400).json({ error }));
   });
 
-  //route pour la demande de carte 
-  app.post( "/create-demande", async (req, res) => {
-    try {
-        // Recherche si l'utilisateur existe déjà dans la base de données
-        const existingUser = await User.findOne({ userName: req.body.userName });
-        if (existingUser) {
-            // Si l'utilisateur existe déjà
-            return res.status(400).json({ error: 'Cet utilisateur est déjà utilisée.' });
-        }
-  // Hasher le mot de passe
-  const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-  
-          // Creation d'une nouvelle demande
-const newDemande = new Demande({
-    userName: req.body.userName,
-    email: req.body.email,
-    phoneNumber: req.body.phoneNumber,
-    password: hashedPassword,
-    nom: req.body.nom,
-    prenom: req.body.prenom,
-    date: req.body.date
+  app.get("/api/users", (req, res) => {
+    Users.find()
+      .sort({ orderDate: -1 })
+      .then((user) => res.status(200).json(user))
+      .catch((error) => res.status(400).json({ error }));
   });
 
-  // Sauvegarder la nouvelle demande dans la base de données
-  await newDemande.save();
-  //await sendSMS(req.body.phoneNumber, `Félicitation ${req.body.userName} Votre demande de carte a bien été prise en compte. prochaine prochaine étape le paiement`);
-//réponse de succès
-res.status(201).json({ message: 'Demande enregistrée avec succès' });
-} catch (error) {
-  console.error('Erreur lors de l\'enregistrement de la demande :', error);
-  res.status(500).json({ error: 'Erreur serveur lors de l\'enregistrement de la demande.' });
-}
-  });
+// Route pour la demande de carte
+app.post("/create-demande", async (req, res) => {
+  console.log('Requête reçue pour créer une demande');
+  const currentDate = new Date().toISOString();
+  const DemandedbId = process.env.NOTION_DEMANDE_DATABASE_ID;
+
+  const nodemailer = require('nodemailer');
+ // Configurer le transporteur Nodemailer avec Amazon WorkMail
+ let transporter = nodemailer.createTransport({
+  host: 'smtp.mail.us-east-1.awsapps.com',
+  port: 465,
+  secure: true, 
+  auth: {
+    user: process.env.USERSMTP,
+    pass: process.env.PASSWORDSMTP,
+  },
+});
+  try {
+    console.log('Recherche de l\'utilisateur dans la base de données');
+
+    // Recherche si l'utilisateur existe déjà dans la base de données
+    const existingUser = await User.findOne({ userName: req.body.userName });
+    if (existingUser) {
+      console.log('Utilisateur existant trouvé');
+      return res.status(400).json({ error: 'Cet utilisateur est déjà utilisé.' });
+    }
+
+    console.log('Utilisateur non trouvé, création de la demande');
+
+    // Hasher le mot de passe
+    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+    console.log('Mot de passe hashé');
+
+    // Création d'une nouvelle demande
+    const newDemande = new Demande({
+      userName: req.body.userName,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      password: hashedPassword,
+      nom: req.body.nom,
+      prenom: req.body.prenom,
+      date: req.body.date
+    });
+
+    console.log('Envoi de l\'e-mail');
+    // Rendre le template Handlebars en HTML
+    app.render('emails/demande', {
+      userName: req.body.userName,
+      nom: req.body.nom,
+      prenom: req.body.prenom,
+      date: req.body.date,
+      phone: req.body.phoneNumber,
+      email: req.body.email,
+    }, async (err, html) => {
+      if (err) {
+        console.error('Erreur lors du rendu du template :', err);
+        return res.status(500).json({ error: 'Erreur serveur lors du rendu de l\'email.' });
+      }
+
+      // Sauvegarder la nouvelle demande dans la base de données
+      await newDemande.save();
+      console.log('Nouvelle demande enregistrée');
+      // ENREGISTREMENT DANS NOTION 
+      const newPage = await notion.pages.create({
+        parent: {
+          type: "database_id",
+          database_id: DemandedbId,
+        },
+        properties: {
+          Nom: {
+            title: [
+              {
+                text: {
+                  content: req.body.nom,
+                },
+              },
+            ],
+          }, 
+          Prenom: {
+            rich_text: [
+              {
+                text: {
+                  content: req.body.prenom,
+                },
+              },
+            ],
+          },
+          Prix: {
+            number: 20000,
+          },
+          Date: {
+            date: {
+              start: currentDate ,
+            },
+          },
+          Téléphone: {
+            phone_number: req.body.phoneNumber,
+          },
+          Email: {
+            email: req.body.email, // Correction ici
+          },
+          Password: {
+            rich_text: [
+              {
+                text: {
+                  content: req.body.password,
+                },
+              },
+            ],
+          },
+          Pseudo: {
+            rich_text: [
+              {
+                text: {
+                  content: req.body.userName,
+                },
+              },
+            ],
+          },
+        },
+      });
+      // Réponse de succès
+      res.status(201).json({ message: 'Demande enregistrée avec succès', data: newPage });
+      console.log("Page notion crée : ");
+       // Envoyer l'e-mail
+       const info = await transporter.sendMail({
+        from: '"CONNECT TEAM" <support@connect2card.com>',
+        to: req.body.email, 
+        subject: `Félicitation 🎉 ${req.body.userName} `, 
+        html: html, // HTML body
+      });
+
+      console.log("E-mail envoyé : %s", info.messageId);
+    });
+
+  } catch (error) {
+    console.error('Erreur lors de l\'enregistrement de la demande :', error);
+    res.status(500).json({ error: 'Erreur serveur lors de l\'enregistrement de la demande.' });
+  }
+});
 
   // Route pour mettre à jour le profil d'un utilisateur par son nom d'utilisateur
   app.put('/edit/profil/:userName', async (req, res) => {
@@ -426,6 +537,9 @@ res.status(201).json({ message: 'Demande enregistrée avec succès' });
     if (req.body.pinterest !== undefined) user.pinterest = req.body.pinterest;
     if (req.body.linkedin !== undefined) user.linkedin = req.body.linkedin;
     if (req.body.mail !== undefined) user.mail = req.body.mail;
+    if (req.body.web !== undefined) user.web = req.body.web;
+    if (req.body.googleReview !== undefined) user.googleReview = req.body.googleReview;
+    if (req.body.tripadvisor !== undefined) user.tripadvisor = req.body.tripadvisor;
     if (req.body.behance !== undefined) user.behance = req.body.behance;
     if (req.body.service1 !== undefined) user.service1 = req.body.service1;
     if (req.body.service2 !== undefined) user.service2 = req.body.service2;
@@ -433,12 +547,15 @@ res.status(201).json({ message: 'Demande enregistrée avec succès' });
     if (req.body.service4 !== undefined) user.service4 = req.body.service4;
     if (req.body.telegram !== undefined) user.telegram = req.body.telegram;
      
-  
+      // Décrémenter le crédit de l'utilisateur
+    if (user.credit > 0) {
+      user.credit -= 1;
+    }
       // Enregistrer les modifications dans la base de données
       await user.save();
   
       // Répondre avec un statut de succès
-      res.status(200).json({ message: 'Profil utilisateur mis à jour avec succès' });
+      res.status(200).json({ message: 'Profil utilisateur mis à jour avec succès', remainingCredits: user.credit });
     } catch (error) {
       // En cas d'erreur, renvoyer une réponse avec un code d'erreur
       console.error(error);
@@ -446,6 +563,64 @@ res.status(201).json({ message: 'Demande enregistrée avec succès' });
     }
   });
 
+  app.post('/api/forgot-password', async (req, res) => {
+    const { email } = req.body;
+
+ let transporter = nodemailer.createTransport({
+  host: 'smtp.mail.us-east-1.awsapps.com',
+  port: 465,
+  secure: true, 
+  auth: {
+    user: process.env.USERSMTP,
+    pass: process.env.PASSWORDSMTP,
+  },
+});
+    
+    const user = await User.findOne({ email });
+  
+    if (!user) {
+      return res.status(404).send('Utilisateur non trouvé');
+    }
+  
+    const token = crypto.randomBytes(20).toString('hex');
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 heure
+    await user.save();
+     // Obtenir l'adresse IP
+  const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+  // Obtenir le navigateur et le système d'exploitation
+  const agent = useragent.parse(req.headers['user-agent']);
+  const browser = agent.toAgent();
+  const os = agent.os.toString();
+    const mailOptions = {
+      to: user.email,
+      from: '"CONNECT TEAM" <support@connect2card.com>',
+      subject: 'Réinitialisation de mot de passe',
+      template: 'emails/reset',
+      context: {
+        userName: user.userName,
+        nom: user.nom,
+        prenom: user.prenom,
+        date: user.date,
+        phone: user.phoneNumber,
+        email: user.email,
+        resetLink: `http://${req.headers.host}/reset-password/${token}`,
+        ipAddress: ipAddress,
+        browser: browser,
+        os: os,
+      }
+    };
+  
+    transporter.sendMail(mailOptions, (err) => {
+      if (err) {
+        console.error('Erreur lors de l\'envoi de l\'e-mail:', err);
+        return res.status(500).send('Erreur lors de l\'envoi de l\'e-mail');
+      }
+      res.status(200).send('Un e-mail de réinitialisation a été envoyé à ' + user.email);
+    });
+  });
+  
 
 
 

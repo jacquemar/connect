@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 177.6 182.1">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ced3d4;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8 {
+        stroke-width: 0px;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-6, .cls-7, .cls-8 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        fill: #969b9a;
+      }
+
+      .cls-3, .cls-4 {
+        fill: #b5bbbb;
+      }
+
+      .cls-5 {
+        fill: #acb1b1;
+      }
+
+      .cls-6 {
+        fill: #c4c8c8;
+      }
+
+      .cls-7 {
+        fill: #fff;
+      }
+
+      .cls-8 {
+        fill: #dbdfdf;
+      }
+    </style>
+  </defs>
+  <g id="silver">
+    <path id="Mask" class="cls-5" d="M28.9,58.7v64.9l60.1,33.1,60.1-33.1V58.7l-60.1-33.1L28.9,58.7ZM89,0l81.9,45.5v91l-81.9,45.5L7.1,136.6V45.6L89,0Z"/>
+    <polygon id="Path" class="cls-6" points="7.1 45.6 29.5 58.4 28.9 58.7 28.9 123.5 29.1 123.6 7.1 136.6 7.1 45.6"/>
+    <polygon id="Path-2" data-name="Path" class="cls-3" points="89 0 170.9 45.6 149.1 58.7 89 25.6 89 0"/>
+    <polygon id="Path-3" data-name="Path" class="cls-2" points="149.1 123.5 170.9 136.6 89 182.1 89 156.6 149.1 123.5"/>
+    <polygon id="Path-4" data-name="Path" class="cls-1" points="89 0 89 25.6 29.1 58.6 28.9 58.5 7.1 46 7.1 45.6 89 0"/>
+    <g id="Rectangle">
+      <polygon id="Mask-2" data-name="Mask" class="cls-4" points="89 60.2 114.5 74.7 114.5 103.8 89 118.4 63.5 103.8 63.5 74.7 89 60.2"/>
+      <polygon class="cls-8" points="63.5 74.7 89 60.2 89 89.3 63.5 94.7 63.5 74.7"/>
+      <polygon class="cls-2" points="114.5 103.8 89 89.3 89 118.4 114.5 103.8"/>
+      <polygon class="cls-1" points="89 60.2 89 89.3 114.5 74.7 89 60.2"/>
+      <polygon class="cls-6" points="63.5 74.7 89 89.3 63.5 103.8 63.5 74.7"/>
+    </g>
+    <path id="Shape" class="cls-7" d="M149.1,58.7l.6,64.8,21.1,13.1-22-11.7-59.1,31.8-.7,25.5-.7-25.5-59.4-33.1,60.1,32.5,59.1-32.5.9-64.8ZM89,0L9.3,46.2l19.7,12.5-20.5-10.9-1.3,88.8V45.6L89,0Z"/>
+  </g>
+</svg>

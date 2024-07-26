@@ -4,7 +4,7 @@ import logoColor from "../assets/icons/COLOR-LOGO-CONNECT.svg";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
  
@@ -45,7 +45,7 @@ const Login = () => {
       toast.success('Connexion réussie');
   
       setTimeout(() => {
-        navigate("/dashboard"); // Naviguer vers la page d'historique
+        navigate("/tableau-de-bord"); // Naviguer vers la page d'historique
       }, 4000);
   
     } catch (error) {
@@ -98,7 +98,7 @@ const Login = () => {
             Mot de passe
           </label>
           <div className="text-sm">
-            <a href="#" className="font-semibold text-cyan-600 hover:text-green-400">
+            <a href="/recuperer-mot-de-passe" className="font-semibold text-cyan-600 hover:text-green-400">
               Mot de passe oublié ?
             </a>
           </div>

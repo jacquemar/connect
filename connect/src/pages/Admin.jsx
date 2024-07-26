@@ -45,43 +45,26 @@ const Admin = () => {
 
 
   useEffect(() => {
-    const getUserData = () => {
-      const token = localStorage.getItem('token');
-      
-      if (!token) {
-        logoutUser();
-        return;
+      const userRole = localStorage.getItem('userRole');
+      if (userRole !== 'Admin') {
+          navigate("/");
       }
-  
-      // Récupérez les informations utilisateur sans vérifier l'expiration du token
-      const userName = jwtDecode(token).userName; 
-      axios.get(`${API_URL}/api/users/${userName}`)
-        .then((response) => {
-          setUserData(response.data);
-          setLoading(false);
-        })
-        .catch(error => {
-          console.error('Erreur lors de la récupération des informations utilisateur:', error);
-          setLoading(false);
-          toast.error('Erreur lors de la récupération des informations utilisateur');
-         logoutUser()
-           
-        });
-    };
-
+      console.log(userRole)
     const getDemandes = async () => {
         try {
           const response = await axios.get(`${API_URL}/api/demandes`);
           setDemandes(response.data);
+          console.log(demandes)
+          setLoading(false)
         } catch (error) {
           console.error('Erreur lors de la récupération des demandes :', error);
           toast.error('Erreur lors de la récupération des demandes');
         }
       };
   
-    getUserData();
+    
     getDemandes();
-  }, []);
+  }, [navigate]);
 
 
   const lastDemandeIndex = currentPage * demandePerPage;
@@ -99,16 +82,6 @@ const Admin = () => {
       navigate("/login"); // Naviguer vers la page d'historique
     }, 1000);
     toast.error("Votre session a expiré. Veuillez vous reconnecter.");
-  };
-
-  const handleProfil = () => {
-    if (userData && userData._id) {
-      const consulterProfil = "/profile/" + userData.userName;
-      navigate(consulterProfil);
-    } else {
-      console.error("L'utilisateur n'a pas d'ID valide.");
-      toast.error("Erreur lors de la redirection vers le profil utilisateur.");
-    }
   };
 
   const handleApprove = async (demandeId) => {

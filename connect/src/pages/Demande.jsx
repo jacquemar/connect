@@ -15,15 +15,27 @@ const Demande = () => {
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
+    const [phoneValid, setPhoneValid] = useState(true);
     // const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
 
+      // Fonction de validation du numéro de téléphone
+  const validatePhoneNumber = (phone) => {
+    // Ici, vous pouvez implémenter votre propre logique de validation
+    // Par exemple, vérifier si le numéro correspond à un format spécifique
+    // Dans cet exemple, nous vérifions simplement si la longueur est supérieure à 8
+    return phone.length > 9;
+  };
 
     const handleSubmit = async (event) => {
       event.preventDefault();
       const currentDate = format(new Date(), "dd/MM/yyyy HH:mm:ss");
       
       try {
+        if (!validatePhoneNumber(phoneNumber)) {
+          setPhoneValid(false);
+          return; // Arrêter le traitement si le numéro n'est pas valide
+        }
         const response = await axios.post(`${API_URL}/create-demande`, {
           userName,
           email,
@@ -93,14 +105,14 @@ const Demande = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="pseudo" className="block text-sm font-medium leading-6 text-gray-900">
                     Pseudo
                   </label>
                   <div className="mt-2">
                     <input
-                      id="username"
-                      name="username"
-                      type="name"
+                      id="pseudo"
+                      name="pseudo"
+                      type="text"
                       onChange={(e) => setUsername(e.target.value)}
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-400 sm:text-sm sm:leading-6"
@@ -109,14 +121,14 @@ const Demande = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="nom" className="block text-sm font-medium leading-6 text-gray-900">
                     Nom
                   </label>
                   <div className="mt-2">
                     <input
                       id="nom"
                       name="nom"
-                      type="name"
+                      type="text"
                       onChange={(e) => setNom(e.target.value)}
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-400 sm:text-sm sm:leading-6"
@@ -125,14 +137,14 @@ const Demande = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="prenom" className="block text-sm font-medium leading-6 text-gray-900">
                     Prenom
                   </label>
                   <div className="mt-2">
                     <input
                       id="prenom"
                       name="prenom"
-                      type="name"
+                      type="text"
                       onChange={(e) => setPrenom(e.target.value)}
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-400 sm:text-sm sm:leading-6"
@@ -141,23 +153,29 @@ const Demande = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
                     Numéro de téléphone
                   </label>
                   <div className="mt-2">
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="name"
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      required
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-400 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="text"
+                  onChange={(e) => {
+                    setPhoneNumber(e.target.value);
+                    setPhoneValid(validatePhoneNumber(e.target.value)); // Met à jour la validité du numéro
+                  }}
+                  required
+                  className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ${phoneValid ? 'ring-gray-300' : 'ring-red-500'} placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-400 sm:text-sm sm:leading-6`}
+                />
+              </div>
+              {!phoneValid && (
+                <p className="mt-1 text-xs text-red-500">Le numéro de téléphone n'est pas valide.</p>
+              )}
+            </div>
 
                 <div>
-                  <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                     Mot de passe
                   </label>
                   <div className="mt-2">

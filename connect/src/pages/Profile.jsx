@@ -19,12 +19,18 @@ import axios from "axios";
 import { Helmet } from "react-helmet-async";
 import vCardsJS from "vcards-js";
 import Loading from '../components/Loading';
+import { useNavigate } from "react-router-dom";
+import googleReview from "../assets/icons/google-reviews-icon.svg";
+import tripadvisor from "../assets/icons/tripadvisor-icon.svg";
+import web from "../assets/icons/web-icon.svg";
+import Footer from "../components/Footer";
 
 
 function Profile() {
   const [userData, setUserData] = useState("");
   const { userName } = useParams();
   const [loading, setLoading] = useState(true);
+const navigate = useNavigate();
   const handleProfileView = (userName) => {
     if (!userName) return;
     axios.put(`${API_URL}/api/users/${userName}/increment-visits`)
@@ -50,6 +56,7 @@ function Profile() {
         setLoading(false);
       })
       .catch(error => {
+        navigate("/Page404");
         console.error('Erreur lors de la récupération des informations utilisateur:', error);
         setLoading(false);
       });
@@ -58,48 +65,48 @@ function Profile() {
   const handleDownload = async () => {
     if (userData) {
       await axios.post(`${API_URL}/api/users/${userData._id}/increment-download`);
+      
       const vcard = new vCardsJS();
       vcard.firstName = userData.nomComplet;
       vcard.email = userData.mail;
       vcard.homePhone = userData.phoneNumber;
       vcard.title = userData.titre;
+      vcard.url = userData.web;
+  
       if (userData.instagram) {
-        vcard.socialUrls['Instagram'] = userData.instagram;
-    }
+        vcard.other += `X-SOCIALPROFILE;type=instagram:${userData.instagram}\n`;
+      }
       if (userData.twitter) {
-        vcard.socialUrls['Twitter'] = userData.twitter;
-    }
+        vcard.other += `X-SOCIALPROFILE;type=twitter:${userData.twitter}\n`;
+      }
       if (userData.snapchat) {
-        vcard.socialUrls['Snapchat'] = userData.snapchat;
-    }
-      if (userData.snapchat) {
-        vcard.socialUrls['Snapchat'] = userData.snapchat;
-    }
+        vcard.other += `X-SOCIALPROFILE;type=snapchat:${userData.snapchat}\n`;
+      }
       if (userData.whatsapp) {
-        vcard.socialUrls['Whatsapp'] = userData.whatsapp;
-    }
+        vcard.other += `X-SOCIALPROFILE;type=whatsapp:${userData.whatsapp}\n`;
+      }
       if (userData.tiktok) {
-        vcard.socialUrls['Tiktok'] = userData.tiktok;
-    }
+        vcard.other += `X-SOCIALPROFILE;type=tiktok:${userData.tiktok}\n`;
+      }
       if (userData.youtube) {
-        vcard.socialUrls['Youtube'] = userData.youtube;
-    }
+        vcard.other += `X-SOCIALPROFILE;type=youtube:${userData.youtube}\n`;
+      }
       if (userData.pinterest) {
-        vcard.socialUrls['Pinterest'] = userData.pinterest;
-    }
+        vcard.other += `X-SOCIALPROFILE;type=pinterest:${userData.pinterest}\n`;
+      }
       if (userData.behance) {
-        vcard.socialUrls['Behance'] = userData.behance;
-    }
+        vcard.other += `X-SOCIALPROFILE;type=behance:${userData.behance}\n`;
+      }
       if (userData.telegram) {
-        vcard.socialUrls['Telegram'] = userData.telegram;
-    }
+        vcard.other += `X-SOCIALPROFILE;type=telegram:${userData.telegram}\n`;
+      }
       if (userData.linkedIn) {
-        vcard.socialUrls['LinkedIn'] = userData.linkedIn;
-    }
+        vcard.other += `X-SOCIALPROFILE;type=linkedin:${userData.linkedIn}\n`;
+      }
   
       // Convertir le vCard en chaîne de caractères
       let vcardString = vcard.getFormattedString();
-      vcardString = vcardString.replace(/SOCIALPROFILE;CHARSET=UTF-8;/gm, "SOCIALPROFILE;");
+  
       // Créer un objet Blob à partir de la chaîne de caractères
       const blob = new Blob([vcardString], { type: 'text/vcard' });
   
@@ -116,6 +123,7 @@ function Profile() {
       URL.revokeObjectURL(url);
     }
   };
+  
   
   if (loading) {
     return <Loading />;
@@ -301,7 +309,7 @@ function Profile() {
             )}
             {userData.telegram && (
             <div className="items-center">
-              <a href="">
+              <a href={userData.telegram}>
               <button
                 type="button"
                 className="text-white bg-cyan-600 to-indigo-800 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mb-2"
@@ -311,9 +319,32 @@ function Profile() {
               </a>
             </div> 
             )} 
+            {userData.web && (
+            <div className="items-center">
+              <a href={userData.web}>
+              <button
+                type="button"
+                className="text-white bg-white to-indigo-800 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium shadow-lg rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mb-2"
+              >
+                <img src={web} className="h-8 w-8" alt="" />
+              </button>
+              </a>
+            </div>)}
           </div>
         </div>
       </div>
+      {userData.googleReview && (
+      <div className="flex justify-center mt-2">
+      <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 ">
+        <img src={googleReview} className="h-6 w-6 mr-3" alt="review icon" />    Laissez-nous votre avis
+      </button>
+      </div>)}
+      {userData.tripadvisor && (
+      <div className="flex justify-center mt-2">
+      <button type="button" class="text-gray-900 bg-[#30E1A2] hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 ">
+        <img src={tripadvisor} className="h-6 w-6 mr-3" alt="review icon" />    Reviews us on
+      </button>
+      </div>)}
       <div className="p-4 border-t mx-8 mt-2">
         <button onClick={handleDownload} className="block mx-auto rounded-xl bg-blue-700 hover:shadow-lg font-semibold shadow-lg shadow-gray-600 text-white px-6 py-2">
           Enregistrer le contact 🔗
@@ -390,17 +421,7 @@ function Profile() {
           )}
         </ul>
       </div>
-      <hr className="my-2 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-      <div className="text-center mb-2">
-        {" "}
-        <span className="block text-sm  text-gray-500 sm:text-center dark:text-gray-400">
-          © 2024{" "}
-          <a href="https://connect.io/" className="hover:underline font-bold">
-            CONNECT™
-          </a>
-          . All Rights Reserved.
-        </span>
-      </div>
+      <Footer/>
     </div>
   );
 }

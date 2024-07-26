@@ -6,8 +6,11 @@ import ProtectedRoute from "./components/ProtectedRoutes";
 import Dashboard from "./pages/Dashboard";
 import Edit from "./pages/Edit";
 import Demande from "./pages/Demande";
-import Inscription from "./pages/Inscription";
+//import Inscription from "./pages/Inscription";
 import Admin from "./pages/Admin";
+import Page404 from "./pages/Page404";
+import ResetPassword from "./pages/ResetPassword";
+import TableauDeBord from "./pages/TableauDeBord";
 
 
 
@@ -16,14 +19,15 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route exact path="/" element={<Home />} />
         <Route path="/profile/:userName" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
-        <Route path="/demande" element={<Demande />} />
-        <Route path="/dashboard/edit" element={<ProtectedRoute><Edit /></ProtectedRoute>} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/Inscription" element={<Inscription />} />
+        <Route path="/demande" element={<Demande />} />   
+        <Route path="/recuperer-mot-de-passe" element={<ResetPassword />} />
+        <Route path="/tableau-de-bord/edit" element={<ProtectedRoute><Edit /></ProtectedRoute>} />
+        <Route path="/tableau-de-bord" element={<ProtectedRoute><TableauDeBord /></ProtectedRoute>} />
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>
   );

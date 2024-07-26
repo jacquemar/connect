@@ -30,7 +30,9 @@ const Edit = () => {
   const [pinterest, setPinterest] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [email, setEmail] = useState("");
-  const [behance, setBehance] = useState("");
+  const [web, setWeb] = useState("");
+  const [googleReview, setgoogleReview] = useState("");
+  const [tripadvisor, settripadvisor] = useState("");
   const [telegram, setTelegram] = useState("");
   const [service1, setService1] = useState("");
   const [service2, setService2] = useState("");
@@ -50,6 +52,9 @@ const [isLinkedinChecked, setIsLinkedinChecked] = useState(false);
 const [isEmailChecked, setIsEmailChecked] = useState(false);
 const [isBehanceChecked, setIsBehanceChecked] = useState(false);
 const [isTelegramChecked, setIsTelegramChecked] = useState(false);
+const [isWebChecked, setIsWebChecked] = useState(false);
+const [isgoogleReviewChecked, setIsgoogleReviewChecked] = useState(false);
+const [istripadvisorChecked, setIstripadvisorChecked] = useState(false);
 
 
 const [userData, setUserData] = useState("false");
@@ -73,7 +78,7 @@ useEffect(() => {
 		const decodedToken = jwtDecode(token);
 		if (decodedToken.exp * 1000 < Date.now()) {
 			setTimeout(() => {
-				navigate("/dashboard");
+				navigate("/tableau-de-bord");
 			}, 1000);
 		}
   
@@ -179,6 +184,18 @@ const handleTelegramInputChange = () => {
 	setIsTelegramChecked(!isTelegramChecked);
 	
   };
+const handleWebInputChange = () => {
+	setIsWebChecked(!isWebChecked);
+	
+  };
+const handlegoogleReviewInputChange = () => {
+	setIsgoogleReviewChecked(!isgoogleReviewChecked);
+	
+  };
+const handletripadvisorInputChange = () => {
+	setIstripadvisorChecked(!istripadvisorChecked);
+	
+  };
 
     // Fonction de rappel pour gérer les modifications du numéro de téléphone
 const handlePhoneNumberChange = (event) => {
@@ -229,6 +246,15 @@ const handlePhoneNumberChange = (event) => {
 	};
 	const handleTelegramDataChange = (event) => {
 		setTelegram(event.target.value);
+	};
+	const handleWebDataChange = (event) => {
+		setWeb(event.target.value);
+	};
+	const handlegoogleReviewDataChange = (event) => {
+		setgoogleReview(event.target.value);
+	};
+	const handletripadvisorDataChange = (event) => {
+		settripadvisor(event.target.value);
 	};
 	const handleNomCompletDataChange = (event) => {
 		setNomComplet(event.target.value);
@@ -325,6 +351,15 @@ const handlePhoneNumberChange = (event) => {
 		  }
 		  if (isTelegramChecked && telegram && telegram !== currentProfile.telegram) {
 			updatedFields.telegram = telegram;
+		  }
+		  if (isWebChecked && web && web !== currentProfile.web) {
+			updatedFields.web = web;
+		  }
+		  if (isgoogleReviewChecked && googleReview && googleReview !== currentProfile.googleReview) {
+			updatedFields.googleReview = googleReview;
+		  }
+		  if (istripadvisorChecked && tripadvisor && tripadvisor !== currentProfile.tripadvisor) {
+			updatedFields.tripadvisor = tripadvisor;
 		  }
 	  
 		  // Envoi des champs modifiés au serveur pour mise à jour
@@ -574,6 +609,51 @@ const handlePhoneNumberChange = (event) => {
           <div className="md:flex md:flex-row md:space-x-4 w-full text-xs">
 		<div className="w-full flex flex-col mb-3">
 			<input placeholder="lien Telegram" onChange={handleTelegramDataChange} value={telegram} className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4" type="text" name="telegram" id="tg"
+  ></input>
+		</div>
+ </div>
+        )}
+</div>
+<div className="mb-4">
+<label className=" items-center me-5 cursor-pointer">
+  <input type="checkbox" value="" className="sr-only peer" onChange={handleWebInputChange} checked={isWebChecked}></input>
+  <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-cyan-300 dark:peer-focus:ring-cyan-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-gray-400"></div>
+  <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Site Web</span>
+</label>
+{isWebChecked && (
+          <div className="md:flex md:flex-row md:space-x-4 w-full text-xs">
+		<div className="w-full flex flex-col mb-3">
+			<input placeholder="url web" onChange={handleWebDataChange} value={web} className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4" type="text" name="web" id="tg"
+  ></input>
+		</div>
+ </div>
+        )}
+</div>
+<div className="mb-4">
+<label className=" items-center me-5 cursor-pointer">
+  <input type="checkbox" value="" className="sr-only peer" onChange={handlegoogleReviewInputChange} checked={isgoogleReviewChecked}></input>
+  <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-cyan-300 dark:peer-focus:ring-cyan-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-red-400"></div>
+  <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Google Review</span>
+</label>
+{isgoogleReviewChecked && (
+          <div className="md:flex md:flex-row md:space-x-4 w-full text-xs">
+		<div className="w-full flex flex-col mb-3">
+			<input placeholder="lien google review" onChange={handlegoogleReviewDataChange} value={googleReview} className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4" type="text" name="google" id="tg"
+  ></input>
+		</div>
+ </div>
+        )}
+</div>
+<div className="mb-4">
+<label className=" items-center me-5 cursor-pointer">
+  <input type="checkbox" value="" className="sr-only peer" onChange={handletripadvisorInputChange} checked={istripadvisorChecked}></input>
+  <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-cyan-300 dark:peer-focus:ring-cyan-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#30E1A2]"></div>
+  <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">tripadvisor</span>
+</label>
+{istripadvisorChecked && (
+          <div className="md:flex md:flex-row md:space-x-4 w-full text-xs">
+		<div className="w-full flex flex-col mb-3">
+			<input placeholder="lien tripadvisor" onChange={handletripadvisorDataChange} value={tripadvisor} className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4" type="text" name="tripadvisor" id="tg"
   ></input>
 		</div>
  </div>

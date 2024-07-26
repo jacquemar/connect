@@ -84,6 +84,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    web: {
+        type: String,
+        default: ''
+    },
+    googleReview: {
+        type: String,
+        default: ''
+    },
+    tripadvisor: {
+        type: String,
+        default: ''
+    },
     service1: {
         type: String,
         default: ''
@@ -111,6 +123,21 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: 'user'
+    },
+    level: {
+        type: String,
+        default: '1'
+    },
+    profil: {
+        type: String,
+        default: 'bronze'
+    },
+    qrCode: {
+        type: String,
+    },
+    credit: {
+        type: Number,
+        default: 100
     },
 });
 
