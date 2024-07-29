@@ -230,7 +230,7 @@ function TableauDeBord() {
       <circle cx="18" cy="18" r="16" fill="none" className="stroke-current text-white dark:text-blue-500" strokeWidth="2" strokeDasharray="100" strokeDashoffset={getStrokeDashoffset(userData ? userData.vcardDownloadsCount : 0)} strokeLinecap="round"></circle>
     </svg>
     <div className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
-      <span className="text-center text-xs font-bold text-white dark:text-white">{getPointsRemaining(userData ? userData.vcardDownloadsCount : 0)} pts</span>
+      <span className="text-center text-xs font-bold text-white dark:text-white">{getPointsRemaining(userData ? userData.vcardDownloadsCount : 0)}</span>
     </div>
   </div>
 </div>
@@ -253,7 +253,7 @@ function TableauDeBord() {
   <div className="flex items-center justify-between">
     <div className="flex flex-col mt-3 items-start">
       <span className="text-3xl font-bold text-white">{ userData ? userData.credit : "0"}/100</span>
-      <span className="text-sm text-white">Restante(e)</span>
+      <span className="text-sm text-white">Restante(s)</span>
     </div>
   <Link to="/tableau-de-bord/edit"> <button type="button" className="py-1 mt-2 px-1.5 me-2 ml-2 mb-2 text-sm font-bold text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-green-500 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Éditer mon profil</button></Link> 
   </div>

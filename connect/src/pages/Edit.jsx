@@ -96,7 +96,7 @@ useEffect(() => {
 	} catch (error) {
 		console.error('Erreur lors du décodage du token:', error);
 		setTimeout(() => {
-			navigate("/Dashboard");
+			navigate("/tableau-de-bord");
 		}, 1000);
 	}
 	};
@@ -368,7 +368,7 @@ const handlePhoneNumberChange = (event) => {
 		  if (response) {
 			toast.success("Profil mis à jour avec succès !");
 			setTimeout(() => {
-			  navigate("/dashboard"); // Redirection vers la page de tableau de bord
+			  navigate("/tableau-de-bord");
 			}, 1000);
 		  } else {
 			

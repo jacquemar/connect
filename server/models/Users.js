@@ -139,6 +139,10 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 100
     },
+    isActive: {
+        type: Boolean,
+        default: true
+    },
 });
 
 module.exports = mongoose.model('Users', userSchema);

@@ -65,48 +65,48 @@ const navigate = useNavigate();
   const handleDownload = async () => {
     if (userData) {
       await axios.post(`${API_URL}/api/users/${userData._id}/increment-download`);
-      
       const vcard = new vCardsJS();
       vcard.firstName = userData.nomComplet;
       vcard.email = userData.mail;
       vcard.homePhone = userData.phoneNumber;
       vcard.title = userData.titre;
-      vcard.url = userData.web;
-  
       if (userData.instagram) {
-        vcard.other += `X-SOCIALPROFILE;type=instagram:${userData.instagram}\n`;
-      }
+        vcard.socialUrls['Instagram'] = userData.instagram;
+    }
       if (userData.twitter) {
-        vcard.other += `X-SOCIALPROFILE;type=twitter:${userData.twitter}\n`;
-      }
+        vcard.socialUrls['Twitter'] = userData.twitter;
+    }
       if (userData.snapchat) {
-        vcard.other += `X-SOCIALPROFILE;type=snapchat:${userData.snapchat}\n`;
-      }
+        vcard.socialUrls['Snapchat'] = userData.snapchat;
+    }
+      if (userData.snapchat) {
+        vcard.socialUrls['Snapchat'] = userData.snapchat;
+    }
       if (userData.whatsapp) {
-        vcard.other += `X-SOCIALPROFILE;type=whatsapp:${userData.whatsapp}\n`;
-      }
+        vcard.socialUrls['Whatsapp'] = userData.whatsapp;
+    }
       if (userData.tiktok) {
-        vcard.other += `X-SOCIALPROFILE;type=tiktok:${userData.tiktok}\n`;
-      }
+        vcard.socialUrls['Tiktok'] = userData.tiktok;
+    }
       if (userData.youtube) {
-        vcard.other += `X-SOCIALPROFILE;type=youtube:${userData.youtube}\n`;
-      }
+        vcard.socialUrls['Youtube'] = userData.youtube;
+    }
       if (userData.pinterest) {
-        vcard.other += `X-SOCIALPROFILE;type=pinterest:${userData.pinterest}\n`;
-      }
+        vcard.socialUrls['Pinterest'] = userData.pinterest;
+    }
       if (userData.behance) {
-        vcard.other += `X-SOCIALPROFILE;type=behance:${userData.behance}\n`;
-      }
+        vcard.socialUrls['Behance'] = userData.behance;
+    }
       if (userData.telegram) {
-        vcard.other += `X-SOCIALPROFILE;type=telegram:${userData.telegram}\n`;
-      }
+        vcard.socialUrls['Telegram'] = userData.telegram;
+    }
       if (userData.linkedIn) {
-        vcard.other += `X-SOCIALPROFILE;type=linkedin:${userData.linkedIn}\n`;
-      }
+        vcard.socialUrls['LinkedIn'] = userData.linkedIn;
+    }
   
       // Convertir le vCard en chaîne de caractères
       let vcardString = vcard.getFormattedString();
-  
+      vcardString = vcardString.replace(/SOCIALPROFILE;CHARSET=UTF-8;/gm, "SOCIALPROFILE;");
       // Créer un objet Blob à partir de la chaîne de caractères
       const blob = new Blob([vcardString], { type: 'text/vcard' });
   
@@ -134,7 +134,6 @@ const navigate = useNavigate();
 
     
     <div>
-      
             <Helmet>
                 <title>Connect Profil</title>
                 <meta name="description" content="C" />

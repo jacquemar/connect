@@ -620,6 +620,44 @@ app.post("/create-demande", async (req, res) => {
       res.status(200).send('Un e-mail de réinitialisation a été envoyé à ' + user.email);
     });
   });
+
+  // Route pour activer un utilisateur
+app.patch('/activate-profile/:userName', async (req, res) => {
+  try {
+    const userName = req.params.userName;
+    const user = await User.findOneAndUpdate(
+      { userName },
+      { isActive: true },
+      { new: true }
+    );
+    if (!user) {
+      return res.status(404).json({ error: 'Utilisateur non trouvé' });
+    }
+    res.status(200).json({ message: 'Profil activé avec succès', user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erreur lors de l\'activation du profil' });
+  }
+});
+
+// Route pour désactiver un utilisateur
+app.patch('/deactivate-profile/:userName', async (req, res) => {
+  try {
+    const userName = req.params.userName;
+    const user = await User.findOneAndUpdate(
+      { userName },
+      { isActive: false },
+      { new: true }
+    );
+    if (!user) {
+      return res.status(404).json({ error: 'Utilisateur non trouvé' });
+    }
+    res.status(200).json({ message: 'Profil désactivé avec succès', user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erreur lors de la désactivation du profil' });
+  }
+});
   
 
 
