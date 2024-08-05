@@ -514,7 +514,9 @@ app.post("/create-demande", async (req, res) => {
       if (!user) {
         return res.status(404).json({ error: 'Utilisateur non trouvé' });
       }
-  
+      if (!user.isActive) {
+        return res.status(403).json({ error: 'Le profil est désactivé' });
+      }
       // Vérifier si une nouvelle image de profil a été envoyée
       if (req.file) {
 

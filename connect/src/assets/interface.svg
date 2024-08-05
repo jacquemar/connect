@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 595.28 228.2">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#Dégradé_sans_nom_3);
+      }
+
+      .cls-1, .cls-2 {
+        stroke-width: 0px;
+      }
+
+      .cls-3 {
+        letter-spacing: 0em;
+      }
+
+      .cls-4 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-2 {
+        fill: url(#Dégradé_sans_nom_3-2);
+      }
+
+      .cls-5 {
+        letter-spacing: 0em;
+      }
+
+      .cls-6 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-7 {
+        letter-spacing: 0em;
+      }
+
+      .cls-8 {
+        fill: #fff;
+        font-family: Montserrat-ExtraBold, Montserrat;
+        font-size: 80.04px;
+        font-weight: 700;
+      }
+
+      .cls-9 {
+        letter-spacing: -.03em;
+      }
+    </style>
+    <linearGradient id="Dégradé_sans_nom_3" data-name="Dégradé sans nom 3" x1="-102.85" y1="-162.55" x2="1494.53" y2="823.74" gradientTransform="translate(4.54 -15) rotate(3)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#39bcc5"/>
+      <stop offset="1" stop-color="#ffde17"/>
+    </linearGradient>
+    <linearGradient id="Dégradé_sans_nom_3-2" data-name="Dégradé sans nom 3" x1="-257.29" y1="-80.58" x2="1340.1" y2="905.71" gradientTransform="translate(125.95 -13.75) rotate(2.68) scale(1.12 1) skewX(-.6)" xlink:href="#Dégradé_sans_nom_3"/>
+  </defs>
+  <rect class="cls-1" x="36.79" y="21.53" width="503.82" height="115.34" transform="translate(-3.75 15.21) rotate(-3)"/>
+  <rect class="cls-2" x="30.34" y="101.55" width="472.93" height="105.92" transform="translate(-7.72 14.17) rotate(-3)"/>
+  <text class="cls-8" transform="translate(54.35 112.55) rotate(-3)"><tspan x="0" y="0">INTER</tspan><tspan class="cls-9" x="255.47" y="0">F</tspan><tspan class="cls-7" x="304.69" y="0">A</tspan><tspan class="cls-5" x="366.8" y="0">CE</tspan><tspan x="0" y="80.04">IN</tspan><tspan class="cls-4" x="91.64" y="80.04">T</tspan><tspan x="141.58" y="80.04">UIT</tspan><tspan class="cls-3" x="282.44" y="80.04">I</tspan><tspan class="cls-6" x="309.41" y="80.04">V</tspan><tspan x="369.52" y="80.04">E</tspan></text>
+</svg>

@@ -6,7 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoutes";
 import Dashboard from "./pages/Dashboard";
 import Edit from "./pages/Edit";
 import Demande from "./pages/Demande";
-//import Inscription from "./pages/Inscription";
+import Accueil from "./pages/Accueil";
 import Admin from "./pages/Admin";
 import Page404 from "./pages/Page404";
 import ResetPassword from "./pages/ResetPassword";
@@ -20,6 +20,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route exact path="/Accueil" element={<Accueil />} />
         <Route path="/profile/:userName" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
