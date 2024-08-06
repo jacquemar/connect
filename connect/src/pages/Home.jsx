@@ -17,10 +17,18 @@ import offreArgent from '../assets/offreArgent.svg';
 import offreOr from '../assets/offreOr.svg';
 import offrePlatinium from '../assets/offrePlatiniumsvg.svg';
 import { Helmet } from 'react-helmet-async';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import API_URL from "../config"; 
 
 function Home() {
 
     const [activeSection, setActiveSection] = useState(0);
+    const [nom, setNom] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [message, setMessage] = useState('');
 
     const sections = [
       { id: 'section1', label: 'Section 1' },
@@ -63,6 +71,31 @@ function Home() {
         }
       };
 
+      const handleSubmit = async (event) => {
+        event.prevent.default();
+        try {
+          const response = await axios.post(`${API_URL}/send-message`,{
+            nom,
+            phone,
+            email,
+            message,
+          });
+          if (response.status === 201){
+            toast.success("Message envoyé !");
+          }
+          
+        } catch (error) {
+          if (error.response) {
+            
+            toast.error(error.response.data.error);
+          } else {
+            
+            toast.error("Une erreur est survenue lors de l'envoi de votre message");
+          }
+        }
+
+      };
+
   return (
     <div>
       <Helmet>
@@ -81,6 +114,7 @@ function Home() {
             </Helmet>
     <div className="relative min-h-screen">
       <Header activeSection={activeSection} scrollToSection={scrollToSection}/>
+      <ToastContainer/>
       <div className="fixed top-1/2 transform -translate-y-1/2 right-2 md:right-8">
         {sections.map((section, index) => (
           <div
@@ -116,8 +150,8 @@ function Home() {
     votre profil.
   </span>
 </p>
-    <button className="mt-4 px-6 py-2 bg-gradient-to-r from-[#39BCC5] to-[#8084C0] font-sans font-semibold text-xl text-white rounded-full">
-      Démarrer
+    <button className="mt-4 px-6 py-2 bg-gradient-to-r from-[#39BCC5] to-[#8084C0] font-sans font-semibold text-xl text-white rounded-full"><a href="https://connect2card.com/demande">
+      Démarrer</a>
     </button>
   </div>
 </section>
@@ -135,8 +169,8 @@ function Home() {
           Personnalisez <br />
           facilement votre profil..
           </p>
-          <button className="px-6 mt-44 mb-52 ml-20 py-2 bg-gradient-to-r from-[#39BCC5] to-[#8084C0] font-sans font-semibold text-xl text-white rounded-full">
-            Découvrir
+          <button className="px-6 mt-44 mb-52 ml-20 py-2 bg-gradient-to-r from-[#39BCC5] to-[#8084C0] font-sans font-semibold text-xl text-white rounded-full"><a href="https://connect2card.com/demande">
+            Découvrir</a>
           </button>
         </div> 
       </section>
@@ -144,7 +178,7 @@ function Home() {
       <section id="section3" className="p-6 flex mt-28 flex-col items-center">
 
         <div className="w-full mt-20 md:ml-36 ml-8 flex justify-center md:justify-start mb-20">
-            <img src={match} alt="SVG Example" className="w-full md:w-1/3 h-auto" />
+            <img src={match} alt="SVG Example" className="w-full font-sans font-extrabold md:w-1/3 h-auto" />
         </div>
 
         <div className="w-full mb-32 md:flex grid grid-cols-1 justify-around">
@@ -174,8 +208,8 @@ function Home() {
         vos besoins pour une <br />présentation professionnelle <br />
         et unique.</p> 
     <p className='text-xl font-medium pt-3'>Profitez également de <br /> notre application web <br /> intuitive, <br />facilement accessible depuis n'importe où.</p>
-        <button className="px-6 mt-6 md:mb-52 py-2 bg-gradient-to-r from-[#39BCC5] to-[#8084C0] font-sans font-semibold text-xl text-white rounded-full">
-            S'inscrire
+        <button className="px-6 mt-6 md:mb-52 py-2 bg-gradient-to-r from-[#39BCC5] to-[#8084C0] font-sans font-semibold text-xl text-white rounded-full"><a href="https://connect2card.com/demande">
+            S'inscrire</a>
           </button>
   </div>
   <div className="w-full md:w-2/5 flex justify-end mt-6 md:mt-0">
@@ -197,6 +231,7 @@ function Home() {
           type="text"
           id="name"
           name="name"
+          onChange={(e) => setNom(e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           required
         />
@@ -207,6 +242,7 @@ function Home() {
           type="tel"
           id="phone"
           name="phone"
+          onChange={(e) => setPhone(e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           required
         />
@@ -217,6 +253,7 @@ function Home() {
           type="email"
           id="email"
           name="email"
+          onChange={(e) => setEmail(e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           required
         />
@@ -226,6 +263,7 @@ function Home() {
         <textarea
           id="message"
           name="message"
+          onChange={(e) => setMessage(e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           rows="4"
           required
@@ -233,6 +271,7 @@ function Home() {
       </div>
       <button
         type="submit"
+        onClick={handleSubmit}
         className="self-start px-6 py-2 bg-gradient-to-r from-[#39BCC5] to-[#8084C0] font-semibold text-white rounded-full"
       >
         Envoyer

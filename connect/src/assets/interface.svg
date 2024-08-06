@@ -1,57 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 595.28 228.2">
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 595.3 228.2">
   <defs>
     <style>
       .cls-1 {
-        fill: url(#Dégradé_sans_nom_3);
+        fill: url(#linear-gradient);
       }
 
-      .cls-1, .cls-2 {
+      .cls-1, .cls-2, .cls-3 {
         stroke-width: 0px;
       }
 
-      .cls-3 {
-        letter-spacing: 0em;
+      .cls-2 {
+        fill: url(#linear-gradient-2);
       }
 
       .cls-4 {
-        letter-spacing: -.01em;
+        isolation: isolate;
       }
 
-      .cls-2 {
-        fill: url(#Dégradé_sans_nom_3-2);
-      }
-
-      .cls-5 {
-        letter-spacing: 0em;
-      }
-
-      .cls-6 {
-        letter-spacing: -.02em;
-      }
-
-      .cls-7 {
-        letter-spacing: 0em;
-      }
-
-      .cls-8 {
+      .cls-3 {
         fill: #fff;
-        font-family: Montserrat-ExtraBold, Montserrat;
-        font-size: 80.04px;
-        font-weight: 700;
-      }
-
-      .cls-9 {
-        letter-spacing: -.03em;
       }
     </style>
-    <linearGradient id="Dégradé_sans_nom_3" data-name="Dégradé sans nom 3" x1="-102.85" y1="-162.55" x2="1494.53" y2="823.74" gradientTransform="translate(4.54 -15) rotate(3)" gradientUnits="userSpaceOnUse">
+    <linearGradient id="linear-gradient" x1="-102.8" y1="391.2" x2="1494.5" y2="-595.1" gradientTransform="translate(-7.4 213.3) rotate(3) scale(1 -1)" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#39bcc5"/>
       <stop offset="1" stop-color="#ffde17"/>
     </linearGradient>
-    <linearGradient id="Dégradé_sans_nom_3-2" data-name="Dégradé sans nom 3" x1="-257.29" y1="-80.58" x2="1340.1" y2="905.71" gradientTransform="translate(125.95 -13.75) rotate(2.68) scale(1.12 1) skewX(-.6)" xlink:href="#Dégradé_sans_nom_3"/>
+    <linearGradient id="linear-gradient-2" x1="-270.9" y1="308.2" x2="1326.5" y2="-678.1" gradientTransform="translate(127.7 214.4) rotate(2.7) scale(1.1 -1) skewX(.6)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#39bcc5"/>
+      <stop offset="1" stop-color="#ffde17"/>
+    </linearGradient>
   </defs>
-  <rect class="cls-1" x="36.79" y="21.53" width="503.82" height="115.34" transform="translate(-3.75 15.21) rotate(-3)"/>
-  <rect class="cls-2" x="30.34" y="101.55" width="472.93" height="105.92" transform="translate(-7.72 14.17) rotate(-3)"/>
-  <text class="cls-8" transform="translate(54.35 112.55) rotate(-3)"><tspan x="0" y="0">INTER</tspan><tspan class="cls-9" x="255.47" y="0">F</tspan><tspan class="cls-7" x="304.69" y="0">A</tspan><tspan class="cls-5" x="366.8" y="0">CE</tspan><tspan x="0" y="80.04">IN</tspan><tspan class="cls-4" x="91.64" y="80.04">T</tspan><tspan x="141.58" y="80.04">UIT</tspan><tspan class="cls-3" x="282.44" y="80.04">I</tspan><tspan class="cls-6" x="309.41" y="80.04">V</tspan><tspan x="369.52" y="80.04">E</tspan></text>
+  <rect class="cls-1" x="36.8" y="21.5" width="503.8" height="115.3" transform="translate(-3.7 15.2) rotate(-3)"/>
+  <rect class="cls-2" x="30.3" y="101.5" width="472.9" height="105.9" transform="translate(-7.7 14.2) rotate(-3)"/>
+  <g class="cls-4">
+    <g class="cls-4">
+      <path class="cls-3" d="M58.1,56.2l13-.7,2.9,56-13,.7-2.9-56Z"/>
+      <path class="cls-3" d="M135.6,52.2l2.9,56-10.6.6-29.7-32.5,1.8,34-12.8.7-2.9-56,10.7-.6,29.6,32.5-1.8-34,12.8-.7Z"/>
+      <path class="cls-3" d="M161,61.4l-17.9.9-.6-10.6,48.8-2.6.6,10.6-17.9.9,2.4,45.4-13,.7-2.4-45.4Z"/>
+      <path class="cls-3" d="M244,92.2l.5,10.4-43.3,2.3-2.9-56,42.3-2.2.5,10.4-29.4,1.5.6,12.2,26-1.4.5,10.1-26,1.4.7,12.9,30.5-1.6Z"/>
+      <path class="cls-3" d="M290.5,100.2l-11.6-15h-.6s-11.3.6-11.3.6l.8,15.6-12.9.7-2.9-56,24.2-1.3c14.9-.8,24.7,6.5,25.4,19,.4,8.4-3.5,14.8-10.6,18.3l13.5,17.3-13.9.7ZM275.9,55.4l-10.6.6,1,19.5,10.6-.6c7.9-.4,11.7-4.3,11.4-10.4-.3-6.2-4.5-9.5-12.4-9.1Z"/>
+    </g>
+    <g class="cls-4">
+      <path class="cls-3" d="M326.7,52.6l.8,14.8,25.9-1.4.5,10.4-25.9,1.4,1.1,20.4-13,.7-2.9-56,42.3-2.2.5,10.4-29.3,1.5Z"/>
+    </g>
+    <g class="cls-4">
+      <path class="cls-3" d="M401.5,82.3l-26,1.4-4.3,12.2-13.3.7,22-57.3,12.8-.7,28,54.6-13.6.7-5.6-11.7ZM396.9,72.7l-10-21-7.8,21.9,17.7-.9Z"/>
+    </g>
+    <g class="cls-4">
+      <path class="cls-3" d="M422.3,65.2c-.9-16.9,11.4-29.6,28.9-30.5,9.7-.5,17.9,2.6,23.5,8.7l-7.9,8.1c-4-4.1-8.8-6.1-14.4-5.8-10.5.5-17.5,8.3-17,18.8.6,10.6,8.4,17.5,18.8,17,5.6-.3,10.2-2.8,13.7-7.4l8.7,7.2c-4.9,6.8-12.8,10.7-22.6,11.2-17.3.9-30.9-10.5-31.8-27.3Z"/>
+      <path class="cls-3" d="M528.7,77.3l.5,10.4-43.3,2.3-2.9-56,42.3-2.2.5,10.4-29.4,1.5.6,12.2,26-1.4.5,10.1-26,1.4.7,13,30.5-1.6Z"/>
+    </g>
+    <g class="cls-4">
+      <path class="cls-3" d="M62.2,136.2l13-.7,2.9,56-13,.7-2.9-56Z"/>
+      <path class="cls-3" d="M139.8,132.1l2.9,56-10.6.6-29.7-32.5,1.8,34-12.8.7-2.9-56,10.7-.6,29.6,32.5-1.8-34,12.8-.7Z"/>
+    </g>
+    <g class="cls-4">
+      <path class="cls-3" d="M165.9,141.3l-17.9.9-.6-10.6,48.8-2.6.6,10.6-17.9.9,2.4,45.4-13,.7-2.4-45.4Z"/>
+    </g>
+    <g class="cls-4">
+      <path class="cls-3" d="M204.8,160.1l-1.6-31.3,13-.7,1.6,30.9c.6,10.6,5.4,14.8,13.3,14.4,7.9-.4,12.2-5,11.7-15.7l-1.6-30.9,12.8-.7,1.6,31.3c.9,16.5-8.1,26.1-24,26.9-15.9.8-25.8-7.8-26.7-24.3Z"/>
+      <path class="cls-3" d="M266.6,125.5l12.9-.7,2.9,56-12.9.7-2.9-56Z"/>
+      <path class="cls-3" d="M305,134l-17.9.9-.6-10.6,48.8-2.6.6,10.6-17.9.9,2.4,45.4-13,.7-2.4-45.4Z"/>
+    </g>
+    <g class="cls-4">
+      <path class="cls-3" d="M344.3,121.4l13-.7,2.9,56-13,.7-2.9-56Z"/>
+    </g>
+    <g class="cls-4">
+      <path class="cls-3" d="M425,117.2l-21.3,57.2-12.8.7-27.1-54.7,14-.7,19.1,39.1,15.2-40.9,12.9-.7Z"/>
+    </g>
+    <g class="cls-4">
+      <path class="cls-3" d="M477,160.1l.5,10.4-43.3,2.3-2.9-56,42.3-2.2.5,10.4-29.4,1.5.6,12.2,26-1.4.5,10.1-26,1.4.7,13,30.5-1.6Z"/>
+    </g>
+  </g>
 </svg>
