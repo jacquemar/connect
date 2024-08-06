@@ -16,6 +16,7 @@ import offreBronze from '../assets/offreBronze.svg';
 import offreArgent from '../assets/offreArgent.svg';
 import offreOr from '../assets/offreOr.svg';
 import offrePlatinium from '../assets/offrePlatiniumsvg.svg';
+import { Helmet } from 'react-helmet-async';
 
 function Home() {
 
@@ -64,9 +65,23 @@ function Home() {
 
   return (
     <div>
+      <Helmet>
+                <title>Connect Card</title>
+                <meta name="description" content="Renforcez votre présence en ligne avec la carte de visite 100% digital" />
+                <meta name="keywords" content="carte de visite, digital, business card, connect"/>
+                <link rel="canonical" href="https://connect2card.com"/>
+                <meta property="og:title" content="Connect Card" />
+                <meta property="og:description" content="Carte de visite 100% digital" />
+                <meta property="og:image" content="https://connect2card.com/assets/bg-connect-BrHsARTI.jpg" />
+                <meta property="og:url" content="https://connect2card.com" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Card de visite 100% Digital" />
+                <meta name="twitter:description" content="Renforcez votre présence en ligne avec la carte de visite 100% digital" />
+                <meta name="twitter:image" content="https://connect2card.com/assets/bg-connect-BrHsARTI.jpg" />
+            </Helmet>
     <div className="relative min-h-screen">
       <Header activeSection={activeSection} scrollToSection={scrollToSection}/>
-      <div className="fixed top-1/2 transform -translate-y-1/2 right-8">
+      <div className="fixed top-1/2 transform -translate-y-1/2 right-2 md:right-8">
         {sections.map((section, index) => (
           <div
             key={section.id}
@@ -77,11 +92,11 @@ function Home() {
           ></div>
         ))}
       </div>
-      <section id="section1" className="w-full flex flex-col md:mb-36 md:flex-row md:mt-20 mt-64 ml-2 items-center md:p-6 p-2">
+      <section id="section1" className="w-full flex flex-col md:mb-36 md:flex-row md:mt-20 mt-44 ml-2 items-center md:p-6 p-2">
   <div className="w-full md:w-2/4 md:flex md:justify-end">
     <img src={image1} alt="Example" className="hidden md:block w-2/3 h-auto  md:ml-auto" />
   </div>
-  <div className="w-full md:w-2/4 md:flex md:flex-col items-center md:items-start md:p-6 mt-[-6rem] text-center md:text-left">
+  <div className="w-full md:w-2/4 md:flex md:flex-col items-center md:items-start md:p-6 text-center md:text-left">
     <img 
       src={futurSvg} 
       alt="SVG Example" 
@@ -108,20 +123,19 @@ function Home() {
 </section>
 
       <section
-      id="section2"
-        className="hidden md:block -mt-6 flex-col justify-center items-start p-6 bg-cover bg-center text-white"
+      id="section2" className="ml-4 md:ml-0 bg-cover bg-center md:mt-6 md:p-6"
         style={{
           backgroundImage: `url(${backgroundImage})`,
           minHeight: '500px'
         }}
       >
-        <div className="ml-24 mt-44 max-w-md">
+        <div className="md:ml-24 mt-44 max-w-md">
           <img src={textInterface} alt='interface'  className="mt-40 mb-10"/>
-          <p className="text-2xl ml-8 mt-44 font-sans font-semibold text-black mb-20">
+          <p className="md:text-2xl md:ml-8 mt-44 ml-4 text-xl font-sans font-semibold text-black mb-20">
           Personnalisez <br />
           facilement votre profil..
           </p>
-          <button className="px-6 mt-44 mb-52 ml-4 py-2 bg-gradient-to-r from-[#39BCC5] to-[#8084C0] font-sans font-semibold text-xl text-white rounded-full">
+          <button className="px-6 mt-44 mb-52 ml-20 py-2 bg-gradient-to-r from-[#39BCC5] to-[#8084C0] font-sans font-semibold text-xl text-white rounded-full">
             Découvrir
           </button>
         </div> 
