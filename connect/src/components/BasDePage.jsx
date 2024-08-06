@@ -6,7 +6,7 @@ function BasDePage() {
     <div className="container mx-auto">
       <div className="flex flex-wrap justify-center items-center">
         {/* Liste des éléments du footer */}
-        <ul className="flex flex-wrap text-black font-medium justify-center text-sm md:justify-center">
+        <ul className="flex flex-wrap text-black gap-2 font-medium justify-center text-sm md:justify-center">
           <li className="mb-2 md:mb-0 md:mx-4"><a href="#" className="hover:underline">Cookies</a></li>
           <li className="mb-2 md:mb-0 md:mx-4"><a href="#" className="hover:underline">Conditions Générales</a></li>
           <li className="mb-2 md:mb-0 md:mx-4"><a href="#" className="hover:underline">Confidentialité</a></li>
