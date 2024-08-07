@@ -150,7 +150,7 @@ function Home() {
     votre profil.
   </span>
 </p>
-    <button className="mt-4 px-6 py-2 bg-gradient-to-r from-[#39BCC5] to-[#8084C0] font-sans font-semibold text-xl text-white rounded-full"><a href="https://connect2card.com/demande">
+    <button className="mt-4 px-6 py-2 bg-gradient-to-r from-[#39BCC5] to-[#8084C0] font-sans font-semibold text-xl text-white rounded-full"><a href="https://connect2card.com/login">
       Démarrer</a>
     </button>
   </div>
@@ -170,7 +170,7 @@ function Home() {
           facilement votre profil..
           </p>
           <button className="px-6 mt-44 mb-52 ml-20 py-2 bg-gradient-to-r from-[#39BCC5] to-[#8084C0] font-sans font-semibold text-xl text-white rounded-full"><a href="https://connect2card.com/demande">
-            Découvrir</a>
+            Essayer</a>
           </button>
         </div> 
       </section>
