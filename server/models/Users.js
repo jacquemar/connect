@@ -143,6 +143,20 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    isSuspended: { 
+        type: Boolean, 
+        default: false 
+    },
+    visitsHistory: [{
+        date: {
+          type: Date,
+          default: Date.now
+        },
+        count: {
+          type: Number,
+          default: 1
+        }
+      }]
 });
 
 module.exports = mongoose.model('Users', userSchema);

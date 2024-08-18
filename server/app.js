@@ -30,6 +30,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Configuration moteur de templates Handlebars
 
 app.engine('handlebars', exphbs.engine({ extname: '.handlebars', defaultLayout: false }));
@@ -212,24 +215,39 @@ app.delete('/api/user/:id', async (req, res) => {
   }
 });
 
-app.put('/api/users/:userName/increment-visits', async (req, res) => {
+app.post('/api/users/:userName/increment-visit', async (req, res) => {
   try {
     const { userName } = req.params;
-    console.log(`Incrémentation des visites pour l'utilisateur avec l'UserName : ${userName}`);
-    const user = await User.findOneAndUpdate(
-      { userName: userName }, 
-      { $inc: { visitscount: 1 } },
-      { new: true }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Réinitialiser l'heure à minuit
+
+    const user = await User.findOne({ userName });
+    if (!user) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+
+    // Vérifier si une entrée existe déjà pour aujourd'hui
+    const todayEntry = user.visitsHistory.find(entry => 
+      entry.date.toISOString().split('T')[0] === today.toISOString().split('T')[0]
     );
 
-    if (user) {
-      res.status(200).json(user);
+    if (todayEntry) {
+      // Incrémenter le compteur existant
+      todayEntry.count += 1;
     } else {
-      res.status(404).json({ error: "Utilisateur non trouvé." });
+      // Ajouter une nouvelle entrée pour aujourd'hui
+      user.visitsHistory.push({ date: today, count: 1 });
     }
+
+    // Incrémenter le compteur total de visites
+    user.visitscount += 1;
+
+    await user.save();
+
+    res.json({ message: 'Visite enregistrée avec succès' });
   } catch (error) {
-    console.error('Erreur lors de l\'incrémentation des visites du profil :', error);
-    res.status(500).json({ error: "Une erreur s'est produite lors de l'incrémentation des visites du profil." });
+    console.error('Erreur lors de l\'enregistrement de la visite:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
   }
 });
 
@@ -372,7 +390,7 @@ app.post("/create-demande", async (req, res) => {
   const nodemailer = require('nodemailer');
  // Configurer le transporteur Nodemailer avec Amazon WorkMail
  let transporter = nodemailer.createTransport({
-  host: 'smtp.mail.us-east-1.awsapps.com',
+  host: process.env.USERHOST,
   port: 465,
   secure: true, 
   auth: {
@@ -462,7 +480,7 @@ app.post("/create-demande", async (req, res) => {
             phone_number: req.body.phoneNumber,
           },
           Email: {
-            email: req.body.email, // Correction ici
+            email: req.body.email, 
           },
           Password: {
             rich_text: [
@@ -569,7 +587,7 @@ app.post("/create-demande", async (req, res) => {
     const { email } = req.body;
 
  let transporter = nodemailer.createTransport({
-  host: 'smtp.mail.us-east-1.awsapps.com',
+  host: process.env.USERHOST,
   port: 465,
   secure: true, 
   auth: {
@@ -643,25 +661,110 @@ app.patch('/activate-profile/:userName', async (req, res) => {
 });
 
 // Route pour désactiver un utilisateur
-app.patch('/deactivate-profile/:userName', async (req, res) => {
+app.patch('/api/users/:userName/toggle-status', async (req, res) => {
   try {
-    const userName = req.params.userName;
-    const user = await User.findOneAndUpdate(
-      { userName },
-      { isActive: false },
-      { new: true }
-    );
+    const { userName } = req.params;
+    const user = await User.findOne({ userName });
+    
     if (!user) {
-      return res.status(404).json({ error: 'Utilisateur non trouvé' });
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
     }
-    res.status(200).json({ message: 'Profil désactivé avec succès', user });
+
+    user.isActive = !user.isActive;
+    await user.save();
+
+    res.status(200).json({ 
+      message: `Profil ${user.isActive ? 'activé' : 'désactivé'} avec succès`,
+      isActive: user.isActive 
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erreur lors de la désactivation du profil' });
+    console.error('Erreur lors du basculement du statut du profil:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
   }
 });
-  
 
+//route pour les statistiques
+
+app.get('/api/users/:userName/visits-history', async (req, res) => {
+  try {
+    const { userName } = req.params;
+    const { period } = req.query; // 'day', 'week', 'month', 'quarter'
+    
+    const user = await User.findOne({ userName });
+    if (!user) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+
+    const now = new Date();
+    let startDate;
+
+    switch(period) {
+      case 'day':
+        startDate = new Date(now.setDate(now.getDate() - 1));
+        break;
+      case 'week':
+        startDate = new Date(now.setDate(now.getDate() - 7));
+        break;
+      case 'month':
+        startDate = new Date(now.setMonth(now.getMonth() - 1));
+        break;
+      case 'quarter':
+        startDate = new Date(now.setMonth(now.getMonth() - 3));
+        break;
+      default:
+        startDate = new Date(now.setDate(now.getDate() - 7)); // default to week
+    }
+
+    const visitsHistory = user.visitsHistory.filter(visit => visit.date >= startDate);
+
+    // Agréger les visites par jour
+    const aggregatedVisits = visitsHistory.reduce((acc, visit) => {
+      const date = visit.date.toISOString().split('T')[0];
+      if (!acc[date]) {
+        acc[date] = 0;
+      }
+      acc[date] += visit.count;
+      return acc;
+    }, {});
+
+    const formattedData = Object.keys(aggregatedVisits).map(date => ({
+      name: date,
+      visits: aggregatedVisits[date]
+    }));
+
+    res.json(formattedData);
+  } catch (error) {
+    console.error('Erreur lors de la récupération de l\'historique des visites:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+//suspendre/réactiver un compte
+app.patch('/api/users/:userName/toggle-suspension', async (req, res) => {
+  try {
+    const { userName } = req.params;
+    const user = await User.findOne({ userName });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+
+    user.isSuspended = !user.isSuspended;
+    if (user.isSuspended) {
+      user.isActive = false; // Désactiver le profil si le compte est suspendu
+    }
+    await user.save();
+
+    res.status(200).json({ 
+      message: `Compte ${user.isSuspended ? 'suspendu' : 'réactivé'} avec succès`,
+      isSuspended: user.isSuspended,
+      isActive: user.isActive
+    });
+  } catch (error) {
+    console.error('Erreur lors de la modification de l\'état de suspension:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
 
 
 

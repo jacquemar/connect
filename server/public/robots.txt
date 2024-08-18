@@ -1,0 +1,20 @@
+# Bloquer l'accès aux routes protégées
+User-agent: *
+Disallow: /admin
+Disallow: /tableau-de-bord
+Disallow: /tableau-de-bord/edit
+
+# Autoriser l'accès à toutes les autres pages
+Allow: /
+
+
+Disallow: /config
+
+# Empêcher l'accès aux fichiers sensibles
+Disallow: /Dockerfile
+Disallow: /backend/
+Disallow: /server/
+Disallow: /database/
+
+# Ajouter un lien vers votre sitemap (une bonne pratique)
+Sitemap: https://www.connect2card.com/sitemap.xml
