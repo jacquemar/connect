@@ -24,29 +24,33 @@ import googleReview from "../assets/icons/google-reviews-icon.svg";
 import tripadvisor from "../assets/icons/tripadvisor-icon.svg";
 import web from "../assets/icons/web-icon.svg";
 import Footer from "../components/Footer";
-
+import ProfileVisitTracker from "../components/ProfileVisitTracker";
+import Png404 from "../assets/Carte Erreur-01.png"
 
 function Profile() {
   const [userData, setUserData] = useState("");
   const { userName } = useParams();
   const [loading, setLoading] = useState(true);
 const navigate = useNavigate();
-  const handleProfileView = (userName) => {
-    if (!userName) return;
-    axios.put(`${API_URL}/api/users/${userName}/increment-visits`)
-      .then((response) => {
-        console.log('Nombre de visites incrémenté');
-        
-      })
-      .catch((error) => {
-        console.error('Erreur lors de l\'incrémentation des visites :', error);
-       
-      });
-  };
 
-  useEffect(() => {
-    handleProfileView(userName);
-  }, [userName]);
+const renderWatermark = () => {
+  if (!userData.isActive) {
+    return (
+      <div className="absolute inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-sm">
+        <div class=" flex flex-col mt-16 md:w-96 md:justify-center items-center">
+    <div className=''>
+    <img src={Png404} className="w-5/6 md:ml-6 ml-8 items-center" alt="connexion perdue erreur 404 connect " /></div>
+    <div class="flex flex-col items-center mb-5 justify-center">
+        <a href="/" class="flex items-center space-x-2 bg-[#8DC63F] hover:bg-cyan-500 text-gray-100 px-4 py-2 mt-12 rounded transition duration-150" title="Return Home">
+            <span >Retourner à l'accueil</span>
+        </a>
+    </div>
+</div>
+      </div>
+    );
+  }
+  return null;
+};
 
   useEffect(() => {
     // Récupérer les informations de l'utilisateur
@@ -133,7 +137,9 @@ const navigate = useNavigate();
   return (
 
     
-    <div>
+    <div className="">
+      {renderWatermark()}
+      <div className={`${!userData.isActive ? 'pointer-events-none' : ''}`}>
             <Helmet>
                 <title>Connect Profil</title>
                 <meta name="description" content="C" />
@@ -148,7 +154,7 @@ const navigate = useNavigate();
                 <meta name="twitter:description" content="Rejoignez moi sur les réseaux ou ajoutez mon contact !" />
                 <meta name="twitter:image" content="https://connect2card.com/assets/bg-connect-BrHsARTI.jpg" />
             </Helmet>
-           
+            <ProfileVisitTracker userName={userName} />
       <div className="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto mt-16 bg-white shadow-xl rounded-lg text-gray-900">
         <div className="rounded-t-lg h-32 overflow-hidden">
         {userData && (userData.banniereURL !== '' ? (
@@ -349,7 +355,10 @@ const navigate = useNavigate();
           Enregistrer le contact 🔗
         </button>
       </div>
-      <div className="mx-4 mb-4 mt-4 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+
+
+      <div className="flex flex-col items-center" >
+      <div className="mx-4 mb-4 mt-4 max-w-sm p-6 px-20 md:px-20 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <h5 className="mb-4 text-xl text-center font-bold  text-gray-500 dark:text-gray-400">
           Services
         </h5>
@@ -420,7 +429,9 @@ const navigate = useNavigate();
           )}
         </ul>
       </div>
+      </div>
       <Footer/>
+    </div>
     </div>
   );
 }

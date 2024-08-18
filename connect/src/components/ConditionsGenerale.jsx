@@ -5,7 +5,7 @@ import BasDePage from './BasDePage'
 function ConditionsGenerale() {
   return (
     <div>
-        <Header/>
+        
             <div>
                 <div className='flex flex-col mt-36 mx-4 p-2 mb-20 md:mx-24'>
                 <h1 className='font-sans text-lg text-black font-bold md:text-center md:text-2xl'>Conditions Générales de Vente</h1> <br />

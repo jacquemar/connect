@@ -7,7 +7,7 @@ function Footer() {
       {" "}
       <span className="block text-sm  text-gray-500 sm:text-center dark:text-gray-400">
         © 2024{" "}
-        <a href="https://connect.io/" className="hover:underline font-bold">
+        <a href="https://connect2card.com/" className="hover:underline font-bold">
           CONNECT™
         </a>
         . All Rights Reserved.

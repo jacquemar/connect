@@ -3,7 +3,7 @@ import Header from './Header'
 function MentionsLegales() {
     return (
         <div>
-            <Header/>
+            
                 <div>
                     <div className='flex flex-col mt-36 mx-4 p-2 mb-20 md:mx-24'>
                     <h1 className='font-sans text-lg text-black font-bold md:text-center md:text-2xl'>Mentions Légales</h1> <br />
