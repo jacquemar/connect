@@ -27,6 +27,7 @@
     "react-sparklines": "^1.7.0",
     "react-toastify": "^10.0.5",
     "recharts": "^2.12.7",
+    "sitemap": "^8.0.0",
     "text": "^0.1.0",
     "vcard-json": "^0.5.2",
     "vcards-js": "^2.10.0",
