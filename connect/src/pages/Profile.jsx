@@ -34,18 +34,16 @@ function Profile() {
 const navigate = useNavigate();
 
 const renderWatermark = () => {
-  if (!userData.isActive) {
+  if (userData && !userData.isActive) {
     return (
-      <div className="absolute inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-sm">
-        <div class=" flex flex-col mt-16 md:w-96 md:justify-center items-center">
-    <div className=''>
-    <img src={Png404} className="w-5/6 md:ml-6 ml-8 items-center" alt="connexion perdue erreur 404 connect " /></div>
-    <div class="flex flex-col items-center mb-5 justify-center">
-        <a href="/" class="flex items-center space-x-2 bg-[#8DC63F] hover:bg-cyan-500 text-gray-100 px-4 py-2 mt-12 rounded transition duration-150" title="Return Home">
-            <span >Retourner à l'accueil</span>
-        </a>
-    </div>
-</div>
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-sm">
+        <div className="flex flex-col items-center  ">
+          <img src={Png404} className="w-64 mb-6" alt="Compte suspendu" />
+          
+          <a href="/" className="bg-[#8DC63F] hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded transition duration-300">
+            Retourner à l'accueil
+          </a>
+        </div>
       </div>
     );
   }
@@ -137,9 +135,9 @@ const renderWatermark = () => {
   return (
 
     
-    <div className="">
+    <div className="relative min-h-screen">
       {renderWatermark()}
-      <div className={`${!userData.isActive ? 'pointer-events-none' : ''}`}>
+      <div className={`${!userData?.isActive ? 'pointer-events-none opacity-50' : ''}`}>
             <Helmet>
                 <title>Connect Profil</title>
                 <meta name="description" content="C" />

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 721.44 186.5">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        font-family: Montserrat-ExtraBold, Montserrat;
+        font-size: 63.32px;
+        font-weight: 700;
+      }
+
+      .cls-2 {
+        fill: url(#Dégradé_sans_nom_14-2);
+      }
+
+      .cls-2, .cls-3 {
+        stroke-width: 0px;
+      }
+
+      .cls-4 {
+        letter-spacing: 0em;
+      }
+
+      .cls-5 {
+        letter-spacing: 0em;
+      }
+
+      .cls-3 {
+        fill: url(#Dégradé_sans_nom_14);
+      }
+    </style>
+    <radialGradient id="Dégradé_sans_nom_14" data-name="Dégradé sans nom 14" cx="40.31" cy="-22.35" fx="40.31" fy="-22.35" r="1259.66" gradientTransform="translate(3.4 -13.49) rotate(3)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a1a1a0"/>
+      <stop offset="1" stop-color="#fff"/>
+    </radialGradient>
+    <radialGradient id="Dégradé_sans_nom_14-2" data-name="Dégradé sans nom 14" cy="-22.35" fy="-22.35" gradientTransform="translate(6.97 -19.02) rotate(3)" xlink:href="#Dégradé_sans_nom_14"/>
+  </defs>
+  <rect class="cls-3" x="21.16" y="12.4" width="476.25" height="91.52" transform="translate(-2.69 13.65) rotate(-3)"/>
+  <rect class="cls-2" x="36.6" y="77.77" width="660.09" height="91.52" transform="translate(-5.96 19.35) rotate(-3)"/>
+  <text class="cls-1" transform="translate(31.07 97.36) rotate(-3)"><tspan x="0" y="0">NOS OFFRES</tspan><tspan x="0" y="63.32" xml:space="preserve"> N</tspan><tspan class="cls-4" x="69.47" y="63.32">F</tspan><tspan x="109.74" y="63.32">C ENTRE</tspan><tspan class="cls-5" x="398.12" y="63.32">P</tspan><tspan x="444.15" y="63.32">RISES</tspan></text>
+</svg>

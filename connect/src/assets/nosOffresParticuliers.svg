@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 721.44 186.5">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        font-family: Montserrat-ExtraBold, Montserrat;
+        font-size: 63.32px;
+        font-weight: 700;
+      }
+
+      .cls-2 {
+        fill: url(#Dégradé_sans_nom_14-2);
+      }
+
+      .cls-2, .cls-3 {
+        stroke-width: 0px;
+      }
+
+      .cls-4 {
+        letter-spacing: 0em;
+      }
+
+      .cls-5 {
+        letter-spacing: 0em;
+      }
+
+      .cls-6 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-7 {
+        letter-spacing: 0em;
+      }
+
+      .cls-3 {
+        fill: url(#Dégradé_sans_nom_14);
+      }
+    </style>
+    <radialGradient id="Dégradé_sans_nom_14" data-name="Dégradé sans nom 14" cx="-145.41" cy="-39.8" fx="-145.41" fy="-39.8" r="1214.34" gradientTransform="translate(3.37 -12.49) rotate(3)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a1a1a0"/>
+      <stop offset="1" stop-color="#fff"/>
+    </radialGradient>
+    <radialGradient id="Dégradé_sans_nom_14-2" data-name="Dégradé sans nom 14" cx="-145.41" cy="-39.8" fx="-145.41" fy="-39.8" r="1214.34" gradientTransform="translate(6.91 -19.11) rotate(3)" xlink:href="#Dégradé_sans_nom_14"/>
+  </defs>
+  <rect class="cls-3" x="2.07" y="12.4" width="476.25" height="91.52" transform="translate(-2.71 12.65) rotate(-3)"/>
+  <rect class="cls-2" x="17.48" y="76.67" width="702.04" height="91.52" transform="translate(-5.9 19.45) rotate(-3)"/>
+  <text class="cls-1" transform="translate(11.97 97.36) rotate(-3)"><tspan x="0" y="0">NOS OFFRES</tspan><tspan x="0" y="63.32" xml:space="preserve"> N</tspan><tspan class="cls-4" x="69.47" y="63.32">F</tspan><tspan x="109.74" y="63.32">C </tspan><tspan class="cls-6" x="174.9" y="63.32">P</tspan><tspan x="218.72" y="63.32">A</tspan><tspan class="cls-7" x="268.49" y="63.32">R</tspan><tspan x="314.72" y="63.32">TI</tspan><tspan class="cls-5" x="376.4" y="63.32">C</tspan><tspan x="422.62" y="63.32">ULIERS</tspan></text>
+</svg>

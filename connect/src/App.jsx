@@ -16,6 +16,7 @@ import Cookies from "./components/Cookies";
 import Faq from "./components/Faq";
 import Blog from "./components/Blog";
 import MentionsLegales from "./components/MentionsLegales";
+import Checkout from "./pages/Checkout"
 
 
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
         <Route path="/demande" element={<Demande />} />   
+        <Route path="/checkout" element={<Checkout />} />   
         <Route path="/conditions-generales" element={<Cgu />} />   
         <Route path="/confidentialites" element={<Confidentialite />} />   
         <Route path="/mentions-legales" element={<MentionsLegales />} />   
