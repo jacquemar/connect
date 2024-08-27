@@ -16,12 +16,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
   import 'react-toastify/dist/ReactToastify.css';
+  import { ToastContainer, toast } from "react-toastify";
   import placeholder from "../assets/placeholder.png";
   import {jwtDecode} from "jwt-decode";
   import ProtectedRoute from "../components/ProtectedRoutes";
   import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
-import { ToastContainer, toast } from "react-toastify";
+
 import Footer from "../components/Footer";
 import StatisticsComponent from '../components/StatisticsComponent';
 

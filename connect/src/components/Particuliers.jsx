@@ -49,10 +49,10 @@ function Particuliers({ formData, setFormData }) {
   };
 
   return (
-    <div className="flex flex-col items-center w-full max-w-md mx-auto">
+    <div className="flex flex-col items-start w-full max-w-md mx-auto">
          <ToastContainer/>
-      <img src={nosOffresParticulier} alt="Nos offres NFC Particuliers" className="mt-8 w-72 mr-16" />
-      <span id="badge-dismiss-green" class="inline-flex items-center px-2 mt-2 mb-2 py-1 me-2 text-sm font-medium text-green-800 bg-green-100 rounded dark:bg-green-900 dark:text-green-300">
+      <img src={nosOffresParticulier} alt="Nos offres NFC Particuliers" className="mt-8 w-52 mr-16" />
+      <span id="badge-dismiss-green" className="inline-flex items-center px-2 mt-6 ml-28 mb-6 py-1 me-2 text-sm font-medium text-green-800 bg-green-100 rounded dark:bg-green-900 dark:text-green-300">
       {` ${selectedOffer} - ${quantity} cartes`}
       </span>
       <div className="space-y-4 w-full">

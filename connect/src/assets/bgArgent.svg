@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 911 418.5">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#Dégradé_sans_nom_2);
+        stroke-width: 0px;
+      }
+    </style>
+    <radialGradient id="Dégradé_sans_nom_2" data-name="Dégradé sans nom 2" cx="95.3" cy="-67.1" fx="95.3" fy="-67.1" r="1866" gradientTransform="translate(0 -26.6) scale(1 .9)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6a747e"/>
+      <stop offset="1" stop-color="#95a7c0"/>
+    </radialGradient>
+  </defs>
+  <rect class="cls-1" x="-.5" y="-.5" width="911" height="419" rx="38.6" ry="38.6"/>
+</svg>

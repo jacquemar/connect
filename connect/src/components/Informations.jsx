@@ -21,6 +21,45 @@ function Informations({ formData, setFormData }) {
         }));
     };
 
+    const validateEmailAndUserName = async () => {
+        try {
+            const { email, userName } = formData;
+
+            // Vérification de l'email
+            const emailResponse = await axios.get(`${API_URL}/check-email`, { params: { email } });
+            if (emailResponse.data.exists) {
+                setEmailValid(false);
+                toast.error("Cet email est déjà utilisé.");
+                return;
+            }
+
+            // Vérification du nom d'utilisateur
+            const userNameResponse = await axios.get(`${API_URL}/check-username`, { params: { userName } });
+            if (userNameResponse.data.exists) {
+                setUserNameValid(false);
+                toast.error("Ce nom d'utilisateur est déjà utilisé.");
+                return;
+            }
+
+            // Si tout est valide
+            setEmailValid(true);
+            setUserNameValid(true);
+            onProceed(); // Passer à l'étape suivante
+
+        } catch (error) {
+            console.error("Erreur lors de la validation des informations utilisateur:", error);
+            toast.error("Une erreur est survenue lors de la validation des informations.");
+        }
+    };
+
+    const handleProceed = async () => {
+        if (phoneValid) {
+            await validateEmailAndUserName();
+        } else {
+            toast.error("Le numéro de téléphone n'est pas valide.");
+        }
+    };
+
     // Fonction pour gérer l'upload du logo
     const handleLogoUpload = (e) => {
         const file = e.target.files[0];
